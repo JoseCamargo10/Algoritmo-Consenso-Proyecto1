@@ -1,17 +1,25 @@
 # ST0263 | Tópicos Especiales en Telemática
 
-## Estudiantes
+# Estudiantes
 - José Manuel Camargo Hoyos | jmcamargoh@eafit.edu.co
 - Jose David Valencia Calle | jdvalenci2@eafit.edu.co
 
-## Profesor:
+# Profesor:
 - Juan Carlos Montoya Mendoza | jcmontoy@eafit.edu.co
 
-## Proyecto 1 | Implementación de Algoritmo de Consenso para Elección de Líder
+# Proyecto 1 | Implementación de Algoritmo de Consenso para Elección de Líder
 
-### 1. Descripción del Proyecto
+## 1. Descripción del Proyecto
 
-#### 1.1. Entendimiento del Problema
+En el contexto de los sistemas distribuidos, la coordinación y la consistencia entre los distintos procesos son aspectos fundamentales para el correcto funcionamiento de una aplicación. En este sentido, cuando múltiples procesos colaboran para almacenar, procesar y replicar datos, es necesario que uno de ellos actúe como líder para coordinar las operaciones entre ellos. El líder es responsable de recibir y aplicar las solicitudes de los clientes, garantizar la consistencia de los datos replicados y coordinar a los procesos que actúan como seguidores o followers.
+
+Sin embargo, los sistemas distribuidos están expuestos a fallos de red, caídas de procesos y otros tipos de errores, lo que puede causar la indisponibilidad del líder. En estos casos, la elección de un nuevo líder de manera rápida y segura es fundamental para asegurar la tolerancia a fallos y la disponibilidad continua del sistema. Esta elección debe ser realizada de forma consensuada por todos los procesos restantes, garantizando que solo un proceso asuma el rol de líder en cualquier momento.
+
+Algoritmos de consenso como Raft y Paxos han sido diseñados específicamente para resolver este problema. Estos algoritmos aseguran que, a pesar de fallos en uno o varios procesos, el sistema pueda continuar operando correctamente sin perder datos ni comprometer su consistencia. En sistemas modernos, estos algoritmos son esenciales para garantizar la robustez y disponibilidad de aplicaciones distribuidas, como bases de datos, sistemas de archivos distribuidos y entre otros tipos de servicios.
+
+Este proyecto tiene como objetivo que los estudiantes implementen uno de estos algoritmos o propongan una solución propia para manejar la elección de líder en un entorno distribuido de base de datos, proporcionando una experiencia práctica en el diseño de sistemas tolerantes a fallos.
+
+### 1.1. Entendimiento del Problema
 
 ![Diagrama de Descripción](https://github.com/user-attachments/assets/5fcee5a9-04bf-48ad-b142-ee4cc205f94a)
 
@@ -34,12 +42,40 @@ Finalmente, e identificadas las cuestiones principales del proyecto, hay que ten
 - Si un esclavo falla, el sistema debe seguir funcionando sin problemas, siempre y cuando haya nodos que puedan sustentar las peticiones.
 - En lugar de manejar bases de datos directamente, el manejo de los datos se hará a través de archivos planos, para trabajar en línea con los protocolos de comunicación estudiados recientemente.
 
-### 2. Información General de Diseño de Alto Nivel | Arquitectura | Patrones 
+### 1.2. Requerimientos Funcionales y No Funcionales ALCANZADOS
 
-### 3. Descripción del Ambiente de Desarrollo y Técnico
+#### 1.2.1. Requerimientos Funcionales
 
-### 4. Descripcion del Ambiente de Ejecución (En Producción)
+#### 1.2.2. Requerimientos No Funcionales
 
-### 5. Información Relevante Adicional
+### 1.3. Requerimientos Funcionales y No Funcionales NO ALCANZADOS
 
-### 6. Referencias
+#### 1.3.1. Requerimientos Funcionales
+
+#### 1.3.2. Requerimientos No Funcionales
+
+## 2. Información General de Diseño de Alto Nivel | Arquitectura | Patrones 
+
+## 3. Descripción del Ambiente de Desarrollo y Técnico
+
+### 3.1. ¿Cómo se compila y se ejecuta?
+
+### 3.2. Detalles del Desarrollo
+
+### 3.3. Detalles Técnicos
+
+### 3.4. ¿Cómo se configuran los parámetros del proyecto?
+
+## 4. Descripcion del Ambiente de Ejecución (En Producción)
+
+### 4.1. IP o Nombres de Dominio en la Nube o Máquina Servidor
+
+### 4.2. ¿Cómo se configuran los parámetros del proyecto?
+
+### 4.3. ¿Cómo se lanza el servidor?
+
+### 4.4. Guía de Uso para Usuario
+
+## 5. Información Relevante Adicional
+
+## 6. Referencias
