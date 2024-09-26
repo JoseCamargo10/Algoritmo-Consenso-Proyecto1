@@ -75,7 +75,12 @@ Es un algoritmo de consenso, con el que se busca lograr consistencia en un grupo
 Los nodos participantes pueden estar en tres estados:
 - **Líder:** Todos los cambios que se realicen en el cluster pasan por él primero.
 - **Seguidor:** Nodo pasivo cuya responsabilidad es responder a las peticiones del nodo líder.
-- **Candidato:** Nodo que no ha encontrado líder y solicita su elección. 
+- **Candidato:** Nodo que no ha encontrado líder y solicita su elección.
+
+#### 1.2.3. Resumen
+La elección de un líder es una parte fundamental en los algoritmos de consenso. El líder es responsable de coordinar las operaciones en el sistema, manteniendo la consistencia entre los nodos. Ambos algoritmos tienen diferentes enfoques para la elección de un líder:
+- En Raft, el líder es esencial para la operación, y la pérdida del líder implica una pausa en el procesamiento hasta que se elige uno nuevo.
+- En Paxos, el proceso de elección de líder no es tan evidente, pero Multi-Paxos permite que un líder coordine múltiples rondas de consenso, optimizando el rendimiento. 
 
 ### 1.3. Requerimientos Funcionales y No Funcionales ALCANZADOS
 
@@ -90,6 +95,24 @@ Los nodos participantes pueden estar en tres estados:
 #### 1.4.2. Requerimientos No Funcionales
 
 ## 2. Información General de Diseño de Alto Nivel | Arquitectura | Patrones 
+
+### 2.1. Diseño del Sistema
+
+### 2.2. Especificaciones de Comunicación
+La comunicación en el sistema distribuido se gestionará a través de gRPC, que es eficiente y adecuado para sistemas distribuidos debido a sus características como el uso de HTTP/2 y soporte para múltiples lenguajes.
+
+#### 2.2.1 Roles de los Procesos y la Comunicación
+- **Cliente (Proceso 1):** Realiza consultas y modificaciones en la base de datos.
+    - **Comunicación con el Proxy:** El cliente se comunica con el proxy para enviar solicitudes de lectura/escritura.
+    - **Operación de Lectura:** El proxy redirige las solicitudes de lectura a los seguidores.
+    - **Operación de Escritura:** El proxy redirige las solicitudes de escritura al líder.
+- **Proxy (Proceso 2):** Actúa como intermediario entre el cliente y los nodos de la base de datos.
+    - **Comunicación con Líder y Seguidores** El proxy envía las solicitudes de escritura al líder y las de lectura a los seguidores. Además, recibe notificaciones sobre la elección de un nuevo líder y ajusta las solicitudes en consecuencia.
+- **Líder (Proceso 3):** Coordina las operaciones de escritura y la replicación de los datos.
+    - **Comunicación con Seguidores:** El líder envía las actualizaciones de los logs de replicación a los seguidores. Este proceso es crítico para mantener la consistencia del sistema.
+- **Seguidores (Procesos 4 y 5):** Replican el estado de la base de datos y pueden asumir el rol de líder en caso de fallo.
+    - **Comunicación entre Seguidores:** Los seguidores se comunican entre sí para coordinar la elección de un nuevo líder cuando sea necesario.
+    - **Heartbeats:** El líder envía regularmente "heartbeats" para informar a los seguidores que sigue activo. 
 
 ## 3. Descripción del Ambiente de Desarrollo y Técnico
 
