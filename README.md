@@ -42,17 +42,33 @@ Finalmente, e identificadas las cuestiones principales del proyecto, hay que ten
 - Si un esclavo falla, el sistema debe seguir funcionando sin problemas, siempre y cuando haya nodos que puedan sustentar las peticiones.
 - En lugar de manejar bases de datos directamente, el manejo de los datos se hará a través de archivos planos, para trabajar en línea con los protocolos de comunicación estudiados recientemente.
 
-### 1.2. Requerimientos Funcionales y No Funcionales ALCANZADOS
+### 1.2. Marco Teórico (Paxos VS Raft)
+En los sistemas distribuidos, es crucial que varios nodos lleguen a un acuerdo sobre el estado del sistema, incluso si algunos de los nodos fallan. Los algoritmos de consenso son fundamentales para la consistencia, y dos de los más destacados son Paxos y Raft.
 
-#### 1.2.1. Requerimientos Funcionales
+#### 1.2.1. Paxos
+El algoritmo Paxos fue desarrollado por Leslie Lamport, Robert Shostak y Marshall Pease en 1988, es conocido por ser uno de los más difíciles de entender debido a su complejidad, aunque es un estándar en sistemas de alto rendimiento. Paxos es un algoritmo de consenso distribuido para sistemas descentralizados. Su función es garantizar que un grupo de nodos, que pueden estar ubicados en diferentes lugares y tener diferentes puntos de vista, lleguen a un acuerdo sobre el estado del sistema. Esto es especialmente útil en aplicaciones que requieren tolerancia a fallas, como redes de almacenamiento distribuidas o sistemas de monederos electrónicos. 
 
-#### 1.2.2. Requerimientos No Funcionales
+- **Objetivo:** Paxos tiene como objetivo lograr consenso en un sistema donde los mensajes pueden perderse o duplicarse, y algunos nodos pueden fallar, pero sin comprometer la consistencia. 
+- **Fases Principales:**
+    1. **Proposición:** Un nodo (el proponente) propone un valor para ser acordado.
+    2. **Promesas:** Los nodos participantes (aceptadores) pueden prometer aceptar propuestas.
+    3. **Aceptación:** Si se alcanza un quórum, se acepta la propuesta y el valor se acuerda.
+ 
+- **Elección del Líder:** Paxos no tiene un líder fijo, pero se pueden hacer optimizaciones, como Multi-Paxos, donde se selecciona un líder para manejar múltiples rondas de consenso, lo que mejora el rendimiento al reducir la comunicación.
+- **Ventajas:** Alta tolerancia a fallos y muy utilizado en entornos críticos como Google Chubby.
+- **Desventajas:** La implementación de Paxos es notoriamente compleja, y su rendimiento puede verse afectado si hay fallos frecuentes o gran latencia de red.
 
-### 1.3. Requerimientos Funcionales y No Funcionales NO ALCANZADOS
+### 1.3. Requerimientos Funcionales y No Funcionales ALCANZADOS
 
 #### 1.3.1. Requerimientos Funcionales
 
 #### 1.3.2. Requerimientos No Funcionales
+
+### 1.4. Requerimientos Funcionales y No Funcionales NO ALCANZADOS
+
+#### 1.4.1. Requerimientos Funcionales
+
+#### 1.4.2. Requerimientos No Funcionales
 
 ## 2. Información General de Diseño de Alto Nivel | Arquitectura | Patrones 
 
