@@ -112,7 +112,22 @@ La comunicación en el sistema distribuido se gestionará a través de gRPC, que
     - **Comunicación con Seguidores:** El líder envía las actualizaciones de los logs de replicación a los seguidores. Este proceso es crítico para mantener la consistencia del sistema.
 - **Seguidores (Procesos 4 y 5):** Replican el estado de la base de datos y pueden asumir el rol de líder en caso de fallo.
     - **Comunicación entre Seguidores:** Los seguidores se comunican entre sí para coordinar la elección de un nuevo líder cuando sea necesario.
-    - **Heartbeats:** El líder envía regularmente "heartbeats" para informar a los seguidores que sigue activo. 
+    - **Heartbeats:** El líder envía regularmente "heartbeats" para informar a los seguidores que sigue activo.
+
+#### 2.2.2. Interfaces de gRPC
+- **Cliente a Proxy**
+    - Request(message): Envía solicitudes de lectura/escritura. 
+    - Response(message): Recibe la respuesta de la base de datos.
+- **Proxy a Líder/Seguidores**
+    - WriteRequest(data): Solicitud de escritura, enviada al líder.
+    - ReadRequest(key): Solicitud de lectura, enviada a los followers.
+    - LeaderInfo(leaderId): Notifica al proxy sobre el nuevo líder.
+- **Líder a Seguidores**
+    - AppendEntries(logs): Solicita a los followers replicar entradas de logs.
+    - Heartbeat(): Envía heartbeats periódicos a los followers.
+- **Entre Seguidores**
+    - VoteRequest(candidateId): Solicitud de votos para elegir un nuevo líder.
+    - VoteResponse(granted): Respuesta de aceptación o rechazo del voto. 
 
 ## 3. Descripción del Ambiente de Desarrollo y Técnico
 
