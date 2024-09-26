@@ -47,16 +47,35 @@ En los sistemas distribuidos, es crucial que varios nodos lleguen a un acuerdo s
 
 #### 1.2.1. Paxos
 El algoritmo Paxos fue desarrollado por Leslie Lamport, Robert Shostak y Marshall Pease en 1988, es conocido por ser uno de los más difíciles de entender debido a su complejidad, aunque es un estándar en sistemas de alto rendimiento. Paxos es un algoritmo de consenso distribuido para sistemas descentralizados. Su función es garantizar que un grupo de nodos, que pueden estar ubicados en diferentes lugares y tener diferentes puntos de vista, lleguen a un acuerdo sobre el estado del sistema. Esto es especialmente útil en aplicaciones que requieren tolerancia a fallas, como redes de almacenamiento distribuidas o sistemas de monederos electrónicos. 
-
 - **Objetivo:** Paxos tiene como objetivo lograr consenso en un sistema donde los mensajes pueden perderse o duplicarse, y algunos nodos pueden fallar, pero sin comprometer la consistencia. 
 - **Fases Principales:**
     1. **Proposición:** Un nodo (el proponente) propone un valor para ser acordado.
     2. **Promesas:** Los nodos participantes (aceptadores) pueden prometer aceptar propuestas.
     3. **Aceptación:** Si se alcanza un quórum, se acepta la propuesta y el valor se acuerda.
- 
+
 - **Elección del Líder:** Paxos no tiene un líder fijo, pero se pueden hacer optimizaciones, como Multi-Paxos, donde se selecciona un líder para manejar múltiples rondas de consenso, lo que mejora el rendimiento al reducir la comunicación.
 - **Ventajas:** Alta tolerancia a fallos y muy utilizado en entornos críticos como Google Chubby.
 - **Desventajas:** La implementación de Paxos es notoriamente compleja, y su rendimiento puede verse afectado si hay fallos frecuentes o gran latencia de red.
+
+Es un algoritmo de consenso que cuenta con cierto grado de tolerancia a fallos. Funciona con el modelo de paso de mensajes asincrónicos y con menos de n/2 fallos (pero no con fallos bizantinos), garantizando que se llegará a un acuerdo y a la finalización, si hay un tiempo suficientemente largo sin que ningún proceso reinicie el protocolo. 
+
+#### 1.2.2. Raft
+Raft fue diseñado en 2014 por Diego Ongaro y John Ousterhout como una alternativa a Paxos. Es más fácil de entender y también resuelve el problema del consenso distribuido. Es un protocolo de consenso descentralizado utilizado en sistemas distribuidos. El algoritmo es utilizado para asegurar la consistencia y seguridad de los datos en un sistema distribuido y garantizar que solo haya un líder válido en un momento dado. El algoritmo de raft es ampliamente utilizado en sistemas de bases de datos y clusters de servidores. Es conocido por ser escalable, resistente a fallos y fácil de implementar. 
+- **Objetivo:** Raft también busca alcanzar el consenso de manera distribuida, pero prioriza la simplicidad y claridad en su diseño.
+- **Fases Principales:**
+    1. **Elección de Líder:** Se elige un líder a través de elecciones cuando no hay un líder activo o cuando el líder actual falla. Este líder coordina la replicación de logs entre los seguidores.
+    2. **Replicación de Logs:** El líder recibe las entradas de logs y las distribuye a los seguidores, garantizando la coherencia.
+ 
+- **Elección del Líder:** En Raft, los nodos periódicamente realizan elecciones para elegir un líder. Si un nodo no recibe mensajes de corazón (heartbeats) del líder actual, puede asumir que el líder ha fallado y solicitar una nueva elección.
+- **Ventajas:** Fácil de implementar y de entender, tiene buen rendimiento en condiciones normales y maneja la elección de líder de manera explícita. 
+- **Desventajas:** Si bien es más sencillo que Paxos, no tiene el mismo nivel de optimización que Paxos en escenarios de alta carga o fallos constantes.
+
+Es un algoritmo de consenso, con el que se busca lograr consistencia en un grupo de nodos los cuales comparten información. Trabaja seleccionando un nodo líder sobre el que se realizan las solicitudes y coordinación del resto de los nodos para implementarlas. El clúster de nodos de raft, trabaja mientras que exista una mayoría (51%) de nodos en línea. 
+
+Los nodos participantes pueden estar en tres estados:
+- **Líder:** Todos los cambios que se realicen en el cluster pasan por él primero.
+- **Seguidor:** Nodo pasivo cuya responsabilidad es responder a las peticiones del nodo líder.
+- **Candidato:** Nodo que no ha encontrado líder y solicita su elección. 
 
 ### 1.3. Requerimientos Funcionales y No Funcionales ALCANZADOS
 
@@ -95,3 +114,6 @@ El algoritmo Paxos fue desarrollado por Leslie Lamport, Robert Shostak y Marshal
 ## 5. Información Relevante Adicional
 
 ## 6. Referencias
+- https://medium.com/@dappsar/algor%C3%ADtmos-de-consenso-raft-y-paxos-b252e51e911a
+- https://oa.upm.es/71285/
+- https://www.natapuntes.es/algoritmo-paxos/ 
