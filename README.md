@@ -4,7 +4,7 @@
 - José Manuel Camargo Hoyos | jmcamargoh@eafit.edu.co
 - Jose David Valencia Calle | jdvalenci2@eafit.edu.co
 
-# Profesor:
+# Profesor
 - Juan Carlos Montoya Mendoza | jcmontoy@eafit.edu.co
 
 # Proyecto 1 | Implementación de Algoritmo de Consenso para Elección de Líder
@@ -97,6 +97,44 @@ La elección de un líder es una parte fundamental en los algoritmos de consenso
 ## 2. Información General de Diseño de Alto Nivel | Arquitectura | Patrones 
 
 ### 2.1. Diseño del Sistema
+
+#### 2.1.1. Componentes del Sistema y sus Acciones
+- **Cliente (Proceso 1):**
+    - Realiza solicitudes de lectura y escritura a través del proxy.
+- **Proxy (Proceso 2):**
+    - Redirige las solicitudes de lectura y escritura a los nodos correctos.
+    - Mantiene información actualizada sobre el líder y los seguidores para dirigir las peticiones adecuadamente. 
+- **Líder (Proceso 3):**
+    - Coordina las operaciones de escritura.
+    - Administra la replicación de los logs de transacciones hacia los seguidores.
+    - Envía heartbeats a los seguidores para mantener la relación de liderazgo.
+    - Si falla, los seguidores inician una elección de nuevo líder. 
+- **Seguidores (Procesos 4 y 5):**
+    - Replican las operaciones de escritura.
+    - Responden a las solicitudes de lectura.
+    - Participan en el proceso de elección de líder en caso de fallo.
+
+#### 2.1.2. Flujo de Trabajo de Raft
+1. **Operación de Escritura**
+    - El cliente envía una solicitud de escritura al proxy.
+    - El proxy redirige la solicitud al líder.
+    - El líder agrega la operación al log de replicación.
+    - El líder replica el log a los seguidores y espera confirmaciones (quórum).
+    - Una vez confirmado, el líder aplica la operación a la base de datos y envía la respuesta al cliente.
+2. **Operación de Lectura**
+    - El cliente envía una solicitud de lectura al proxy.
+    - El proxy redirige la solicitud a uno de los seguidores.
+    - El seguidor responde con los datos solicitados.
+3. **Elección de Nuevo Líder**
+    - Si el líder falla (falta de heartbeats), los seguidores inician una elección.
+    - Cada seguidor solicita votos a los otros nodos.
+    - El nodo que obtiene la mayoría de votos se convierte en el nuevo líder.
+    - El nuevo líder notifica al proxy para redirigir las futuras solicitudes.
+
+#### 2.1.3. Simulación de Fallos
+- **Fallo del líder:** Se simula la desconexión del líder. Los seguidores detectan la ausencia de heartbeats e inician el proceso de elección de un nuevo líder.
+- **Fallo de seguidores:** Si un seguidor falla, los otros siguen funcionando mientras haya una mayoría activa.
+- **Reincorporación:** Cuando un proceso se reincorpora, actualiza su estado replicando las entradas del log del líder actual (entra como seguidor y se actualiza). 
 
 ### 2.2. Especificaciones de Comunicación
 La comunicación en el sistema distribuido se gestionará a través de gRPC, que es eficiente y adecuado para sistemas distribuidos debido a sus características como el uso de HTTP/2 y soporte para múltiples lenguajes.
