@@ -158,14 +158,19 @@ La comunicación en el sistema distribuido se gestionará a través de gRPC, que
     - Response(message): Recibe la respuesta de la base de datos.
 - **Proxy a Líder/Seguidores**
     - WriteRequest(data): Solicitud de escritura, enviada al líder.
+    - WriteResponse(message): Notificación sobre la escritura realizada. 
     - ReadRequest(key): Solicitud de lectura, enviada a los followers.
+    - ReadResponse(data): Respuesta del seguidor con los datos esperados. 
     - LeaderInfo(leaderId): Notifica al proxy sobre el nuevo líder.
 - **Líder a Seguidores**
     - AppendEntries(logs): Solicita a los followers replicar entradas de logs.
     - Heartbeat(): Envía heartbeats periódicos a los followers.
 - **Entre Seguidores**
     - VoteRequest(candidateId): Solicitud de votos para elegir un nuevo líder.
-    - VoteResponse(granted): Respuesta de aceptación o rechazo del voto. 
+    - VoteResponse(granted): Respuesta de aceptación o rechazo del voto.
+
+**DIAGRAMA DE COMUNICACIÓN**
+![Diagrama_Comunicación](https://github.com/user-attachments/assets/e134319b-f27a-411f-8b72-9e77570c3a0d)
 
 ## 3. Descripción del Ambiente de Desarrollo y Técnico
 
