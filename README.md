@@ -202,3 +202,5 @@ La comunicación en el sistema distribuido se gestionará a través de gRPC, que
 - https://medium.com/@dappsar/algor%C3%ADtmos-de-consenso-raft-y-paxos-b252e51e911a
 - https://oa.upm.es/71285/
 - https://www.natapuntes.es/algoritmo-paxos/ 
+- https://www.researchgate.net/figure/Leader-election-and-opposition-process-in-the-Raft-PLUS-flow-chart_fig3_360971616
+- https://www.youtube.com/watch?v=sVROxQdFgs4&ab_channel=NataliaBarra
