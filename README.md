@@ -134,7 +134,11 @@ La elección de un líder es una parte fundamental en los algoritmos de consenso
 #### 2.1.3. Simulación de Fallos
 - **Fallo del líder:** Se simula la desconexión del líder. Los seguidores detectan la ausencia de heartbeats e inician el proceso de elección de un nuevo líder.
 - **Fallo de seguidores:** Si un seguidor falla, los otros siguen funcionando mientras haya una mayoría activa.
-- **Reincorporación:** Cuando un proceso se reincorpora, actualiza su estado replicando las entradas del log del líder actual (entra como seguidor y se actualiza). 
+- **Reincorporación:** Cuando un proceso se reincorpora, actualiza su estado replicando las entradas del log del líder actual (entra como seguidor y se actualiza).
+
+**DIAGRAMA DE FLUJO DEL ALGORITMO RAFT**
+
+![Raft](https://github.com/user-attachments/assets/672361a3-414e-4eba-96b6-34d7ea0cb29a)
 
 ### 2.2. Especificaciones de Comunicación
 La comunicación en el sistema distribuido se gestionará a través de gRPC, que es eficiente y adecuado para sistemas distribuidos debido a sus características como el uso de HTTP/2 y soporte para múltiples lenguajes.
