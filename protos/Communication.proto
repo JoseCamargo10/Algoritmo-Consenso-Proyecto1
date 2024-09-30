@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+service communicationHandler {
+    rpc Client_Proxy(Request) returns (Response);
+}
+
+// Client_Proxy request
+message Request {
+    string message = 1;
+}
+
+// Client_Proxy response
+message Response {
+    string message = 1;
+}
