@@ -204,3 +204,5 @@ La comunicación en el sistema distribuido se gestionará a través de gRPC, que
 - https://www.natapuntes.es/algoritmo-paxos/ 
 - https://www.researchgate.net/figure/Leader-election-and-opposition-process-in-the-Raft-PLUS-flow-chart_fig3_360971616
 - https://www.youtube.com/watch?v=sVROxQdFgs4&ab_channel=NataliaBarra
+- https://grpc.io/docs/languages/python/basics/
+- https://www.youtube.com/watch?v=WB37L7PjI5k&ab_channel=MissCoding
