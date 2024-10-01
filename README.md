@@ -215,3 +215,6 @@ Estas librerías se descargan haciendo uso de Pip 24.2:
 - https://www.youtube.com/watch?v=sVROxQdFgs4&ab_channel=NataliaBarra
 - https://grpc.io/docs/languages/python/basics/
 - https://www.youtube.com/watch?v=WB37L7PjI5k&ab_channel=MissCoding
+- https://www.w3schools.com/sql/sql_insert.asp
+- https://www.w3schools.com/sql/sql_select.asp
+- https://realpython.com/python-sleep/
