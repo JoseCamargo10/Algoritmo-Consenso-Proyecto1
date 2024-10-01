@@ -183,6 +183,14 @@ La comunicación en el sistema distribuido se gestionará a través de gRPC, que
 ### 3.2. Detalles del Desarrollo
 
 ### 3.3. Detalles Técnicos
+**Lenguajes de Programación:**
+- Python 3.12.6: https://www.python.org/downloads/release/python-3126/
+
+**Librerías:**
+Estas librerías se descargan haciendo uso de Pip 24.2:
+- grpcio 1.66.2.
+- grpcio-tools 1.66.2.
+- protobuf 5.28.2.
 
 ### 3.4. ¿Cómo se configuran los parámetros del proyecto?
 
