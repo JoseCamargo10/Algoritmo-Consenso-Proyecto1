@@ -218,3 +218,5 @@ Estas librerías se descargan haciendo uso de Pip 24.2:
 - https://www.w3schools.com/sql/sql_insert.asp
 - https://www.w3schools.com/sql/sql_select.asp
 - https://realpython.com/python-sleep/
+- https://www.youtube.com/watch?v=9-LECe6YoiQ&ab_channel=AgustinOlivares-Ingenier%C3%ADa
+- https://www.youtube.com/watch?v=JSLaNX8j7WY&ab_channel=Genbit
