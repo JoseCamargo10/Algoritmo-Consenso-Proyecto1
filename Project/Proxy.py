@@ -6,12 +6,16 @@ import time
 import Communication_pb2
 import Communication_pb2_grpc
 
+# gRPC communication class
+# --------------------------------------------------------------------------------------------------------------
 class communicationHandlerServicer(Communication_pb2_grpc.communicationHandlerServicer):
     def Client_Proxy(self, request, context):
         print(request.message)
         return Communication_pb2.Response(message="Statement received!")
 
-# Configura el servidor
+
+# Server configuration
+# --------------------------------------------------------------------------------------------------------------
 def serve():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     Communication_pb2_grpc.add_communicationHandlerServicer_to_server(communicationHandlerServicer(), server)
@@ -20,7 +24,7 @@ def serve():
     print("Server started on port 50051")
     try:
         while True:
-            time.sleep(86400)  # Mantiene el servidor corriendo
+            time.sleep(86400)  # Keep server alive
     except KeyboardInterrupt:
         server.stop(0)
 
