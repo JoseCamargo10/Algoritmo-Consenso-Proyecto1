@@ -8,7 +8,7 @@ import Communication_pb2_grpc
 
 class communicationHandlerServicer(Communication_pb2_grpc.communicationHandlerServicer):
     def Client_Proxy(self, request, context):
-        print(request)
+        print(request.message)
         return Communication_pb2.Response(message="Statement received!")
 
 # Configura el servidor
