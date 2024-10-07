@@ -189,9 +189,10 @@ La comunicación en el sistema distribuido se gestionará a través de gRPC, que
 **Librerías:**
 
 Estas librerías se descargan haciendo uso de Pip 24.2:
-- grpcio 1.66.2.
-- grpcio-tools 1.66.2.
-- protobuf 5.28.2.
+- grpcio 1.66.2
+- grpcio-tools 1.66.2
+- protobuf 5.28.2
+- py-raft 0.0.1
 
 ### 3.4. ¿Cómo se configuran los parámetros del proyecto?
 
@@ -220,3 +221,9 @@ Estas librerías se descargan haciendo uso de Pip 24.2:
 - https://realpython.com/python-sleep/
 - https://www.youtube.com/watch?v=9-LECe6YoiQ&ab_channel=AgustinOlivares-Ingenier%C3%ADa
 - https://www.youtube.com/watch?v=JSLaNX8j7WY&ab_channel=Genbit
+- https://raft.github.io/
+- https://aeron.io/docs/cluster-quickstart/raft-consensus/
+- https://zeromq.org/get-started/?language=python#
+- https://github.com/nikwl/raft-lite/tree/master
+- https://github.com/lynix94/pyraft/tree/master/pyraft
+- https://www.youtube.com/watch?v=IujMVjKvWP4&ab_channel=CoreDump
