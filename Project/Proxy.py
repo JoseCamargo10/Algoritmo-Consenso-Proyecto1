@@ -6,11 +6,26 @@ import time
 import Communication_pb2
 import Communication_pb2_grpc
 
+# Method to send writing to leader
+# --------------------------------------------------------------------------------------------------------------
+def sendWrite(message):
+    print(f"Write: {message}")
+
+
+# Method to send reading to follower
+# --------------------------------------------------------------------------------------------------------------
+def sendRead(message):
+    print(f"Read: {message}")
+
+
 # gRPC communication class
 # --------------------------------------------------------------------------------------------------------------
 class communicationHandlerServicer(Communication_pb2_grpc.communicationHandlerServicer):
     def Client_Proxy(self, request, context):
-        print(request.message)
+        if request.message.startswith("INSERT"):
+            sendWrite(request.message)
+        elif request.message.startswith("SELECT"):
+            sendRead(request.message)
         return Communication_pb2.Response(message="Statement received!")
 
 
