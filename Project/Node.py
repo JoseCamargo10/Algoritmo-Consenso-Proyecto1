@@ -1,10 +1,20 @@
 import raft
 import csv
 import os
+import socket
+import grpc
+from concurrent import futures
+import time
 
 # Import generated files (for gRPC communication)
 import Communication_pb2
 import Communication_pb2_grpc
+
+class communicationHandlerServicer(Communication_pb2_grpc.communicationHandlerServicer):
+    def WriteProcess(self, request, context):
+        print(f"Proxy says: {request.data}")
+        return Communication_pb2.WriteResponse(message="Request received by leader!")
+
 
 # Read from CSV method
 # --------------------------------------------------------------------------------------------------------------
@@ -46,7 +56,33 @@ def writer(name, attributes):
         writer.writerows(attributes_list)
 
 
+# Method to say to proxy that this node is online with a role
+# --------------------------------------------------------------------------------------------------------------
+def updateProxy(role):
+    hostname = socket.gethostname()
+    IPAddr = socket.gethostbyname(hostname)
+
+    with grpc.insecure_channel("localhost:50052") as channel:
+        stub = Communication_pb2_grpc.communicationHandlerStub(channel)
+        response = stub.UpdateNodes(Communication_pb2.UpdateInfoRequest(ip=IPAddr, role=role))
+        print(f"Proxy says: {response.response}")
+
+
+def serve():
+    node = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
+    Communication_pb2_grpc.add_communicationHandlerServicer_to_server(communicationHandlerServicer(), node)
+    node.add_insecure_port('[::]:50053')    # This must have to be changed later, it is like this only for local tests
+    node.start()
+    print("Node started on port 50053")
+    updateProxy("leader")
+    try:
+        while True:
+            time.sleep(86400)  # Keep server alive
+    except KeyboardInterrupt:
+        node.stop(0)
+
 if __name__ == '__main__':
-    writer("Cars", "Chevrolet,USA,1980")
+    '''writer("Cars", "Chevrolet,USA,1980")
     writer("Cars", "Ferrari,Italy,1980")
-    reader("Cars", "Year", "1980")
+    reader("Cars", "Year", "1980")'''
+    serve()

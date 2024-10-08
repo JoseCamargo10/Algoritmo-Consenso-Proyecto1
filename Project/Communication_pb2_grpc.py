@@ -39,12 +39,34 @@ class communicationHandlerStub(object):
                 request_serializer=Communication__pb2.Request.SerializeToString,
                 response_deserializer=Communication__pb2.Response.FromString,
                 _registered_method=True)
+        self.UpdateNodes = channel.unary_unary(
+                '/communicationHandler/UpdateNodes',
+                request_serializer=Communication__pb2.UpdateInfoRequest.SerializeToString,
+                response_deserializer=Communication__pb2.UpdateInfoResponse.FromString,
+                _registered_method=True)
+        self.WriteProcess = channel.unary_unary(
+                '/communicationHandler/WriteProcess',
+                request_serializer=Communication__pb2.WriteRequest.SerializeToString,
+                response_deserializer=Communication__pb2.WriteResponse.FromString,
+                _registered_method=True)
 
 
 class communicationHandlerServicer(object):
     """Missing associated documentation comment in .proto file."""
 
     def Client_Proxy(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def UpdateNodes(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def WriteProcess(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -57,6 +79,16 @@ def add_communicationHandlerServicer_to_server(servicer, server):
                     servicer.Client_Proxy,
                     request_deserializer=Communication__pb2.Request.FromString,
                     response_serializer=Communication__pb2.Response.SerializeToString,
+            ),
+            'UpdateNodes': grpc.unary_unary_rpc_method_handler(
+                    servicer.UpdateNodes,
+                    request_deserializer=Communication__pb2.UpdateInfoRequest.FromString,
+                    response_serializer=Communication__pb2.UpdateInfoResponse.SerializeToString,
+            ),
+            'WriteProcess': grpc.unary_unary_rpc_method_handler(
+                    servicer.WriteProcess,
+                    request_deserializer=Communication__pb2.WriteRequest.FromString,
+                    response_serializer=Communication__pb2.WriteResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -86,6 +118,60 @@ class communicationHandler(object):
             '/communicationHandler/Client_Proxy',
             Communication__pb2.Request.SerializeToString,
             Communication__pb2.Response.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def UpdateNodes(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/communicationHandler/UpdateNodes',
+            Communication__pb2.UpdateInfoRequest.SerializeToString,
+            Communication__pb2.UpdateInfoResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def WriteProcess(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/communicationHandler/WriteProcess',
+            Communication__pb2.WriteRequest.SerializeToString,
+            Communication__pb2.WriteResponse.FromString,
             options,
             channel_credentials,
             insecure,
