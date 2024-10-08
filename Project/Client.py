@@ -17,6 +17,7 @@ def write(statement):
         response = stub.Client_Proxy(Communication_pb2.Request(message=statement))
         print(f"Server says: {response.message}")
 
+
 def read(statement):
     print(statement)
     # Connect to server (in this case, to proxy)
@@ -25,6 +26,7 @@ def read(statement):
 
         response = stub.Client_Proxy(Communication_pb2.Request(message=statement))
         print(f"Server says: {response.message}")
+
 
 # Validation statement methods
 # --------------------------------------------------------------------------------------------------------------

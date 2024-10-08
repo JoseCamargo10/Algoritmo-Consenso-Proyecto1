@@ -10,6 +10,8 @@ import time
 import Communication_pb2
 import Communication_pb2_grpc
 
+# gRPC communication class
+# --------------------------------------------------------------------------------------------------------------
 class communicationHandlerServicer(Communication_pb2_grpc.communicationHandlerServicer):
     def WriteProcess(self, request, context):
         print(f"Proxy says: {request.data}")
@@ -68,6 +70,8 @@ def updateProxy(role):
         print(f"Proxy says: {response.response}")
 
 
+# Server configuration
+# --------------------------------------------------------------------------------------------------------------
 def serve():
     node = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     Communication_pb2_grpc.add_communicationHandlerServicer_to_server(communicationHandlerServicer(), node)
@@ -81,6 +85,9 @@ def serve():
     except KeyboardInterrupt:
         node.stop(0)
 
+
+# Main Method
+# --------------------------------------------------------------------------------------------------------------
 if __name__ == '__main__':
     '''writer("Cars", "Chevrolet,USA,1980")
     writer("Cars", "Ferrari,Italy,1980")

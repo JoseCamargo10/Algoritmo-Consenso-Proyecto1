@@ -8,6 +8,23 @@ import Communication_pb2_grpc
 
 nodes_info = {}
 
+
+# gRPC communication class
+# --------------------------------------------------------------------------------------------------------------
+class communicationHandlerServicer(Communication_pb2_grpc.communicationHandlerServicer):
+    def Client_Proxy(self, request, context):
+        if request.message.startswith("INSERT"):
+            sendWrite(request.message)
+        elif request.message.startswith("SELECT"):
+            sendRead(request.message)
+        return Communication_pb2.Response(message="Statement received!")
+    
+    def UpdateNodes(self, request, context):
+        nodes_info[request.ip] = request.role
+        print(nodes_info)
+        return Communication_pb2.UpdateInfoResponse(response="Node updated on proxy!")
+
+
 # Method to send writing to leader
 # --------------------------------------------------------------------------------------------------------------
 def sendWrite(message):
@@ -27,22 +44,6 @@ def sendRead(message):
     print(f"Read: {message}")
 
 
-# gRPC communication class
-# --------------------------------------------------------------------------------------------------------------
-class communicationHandlerServicer(Communication_pb2_grpc.communicationHandlerServicer):
-    def Client_Proxy(self, request, context):
-        if request.message.startswith("INSERT"):
-            sendWrite(request.message)
-        elif request.message.startswith("SELECT"):
-            sendRead(request.message)
-        return Communication_pb2.Response(message="Statement received!")
-    
-    def UpdateNodes(self, request, context):
-        nodes_info[request.ip] = request.role
-        print(nodes_info)
-        return Communication_pb2.UpdateInfoResponse(response="Node updated on proxy!")
-
-
 # Server configuration
 # --------------------------------------------------------------------------------------------------------------
 def serve():
@@ -59,5 +60,7 @@ def serve():
         proxy.stop(0)
 
 
+# Main Method
+# --------------------------------------------------------------------------------------------------------------
 if __name__ == '__main__':
     serve()

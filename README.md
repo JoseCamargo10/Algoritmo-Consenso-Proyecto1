@@ -227,3 +227,6 @@ Estas librerías se descargan haciendo uso de Pip 24.2:
 - https://github.com/nikwl/raft-lite/tree/master
 - https://github.com/lynix94/pyraft/tree/master/pyraft
 - https://www.youtube.com/watch?v=IujMVjKvWP4&ab_channel=CoreDump
+- https://protobuf.dev/reference/python/python-generated/#invocation
+- https://www.geeksforgeeks.org/python-program-find-ip-address/
+- https://www.datacamp.com/es/tutorial/guide-to-python-hashmaps
