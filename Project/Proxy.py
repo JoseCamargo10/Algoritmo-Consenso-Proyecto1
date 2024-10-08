@@ -29,13 +29,13 @@ class communicationHandlerServicer(Communication_pb2_grpc.communicationHandlerSe
 # --------------------------------------------------------------------------------------------------------------
 def sendWrite(message):
     print(f"Write: {message}")
-    '''for key, value in nodes_info.items():
+    for key, value in nodes_info.items():
         if value == "leader":
             # Resend the message to leader
             with grpc.insecure_channel(f"{key}:50053") as channel:
                 stub = Communication_pb2_grpc.communicationHandlerStub(channel)
-                response = stub.WriteProcess(Communication_pb2.Request(data = message))
-                print(f"Leader says: {response}")'''
+                response = stub.WriteProcess(Communication_pb2.WriteRequest(data = message))
+                print(f"Leader says: {response}")
 
 
 # Method to send reading to follower
