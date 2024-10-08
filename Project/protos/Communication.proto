@@ -4,8 +4,10 @@ service communicationHandler {
     rpc Client_Proxy(Request) returns (Response);
     rpc UpdateNodes(UpdateInfoRequest) returns (UpdateInfoResponse);
     rpc WriteProcess(WriteRequest) returns (WriteResponse);
+    rpc ReadProcess(ReadRequest) returns (ReadResponse);
 }
 
+// ------------------------------------------------------------------------
 // Client_Proxy request
 message Request {
     string message = 1;
@@ -15,7 +17,9 @@ message Request {
 message Response {
     string message = 1;
 }
+// ------------------------------------------------------------------------
 
+// ------------------------------------------------------------------------
 // Update info request
 message UpdateInfoRequest {
     string ip = 1;
@@ -26,7 +30,9 @@ message UpdateInfoRequest {
 message UpdateInfoResponse {
     string response = 1;
 }
+// ------------------------------------------------------------------------
 
+// ------------------------------------------------------------------------
 // Write Request to leader
 message WriteRequest {
     string data = 1;
@@ -35,4 +41,16 @@ message WriteRequest {
 // Write Response from leader
 message WriteResponse {
     string message = 1;
+}
+// ------------------------------------------------------------------------
+
+// ------------------------------------------------------------------------
+// Read Request to follower
+message ReadRequest {
+    string key = 1;
+}
+
+// Read Response from follower
+message ReadResponse {
+    string data = 1;
 }

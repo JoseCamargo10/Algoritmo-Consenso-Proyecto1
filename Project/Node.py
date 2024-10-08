@@ -15,7 +15,11 @@ import Communication_pb2_grpc
 class communicationHandlerServicer(Communication_pb2_grpc.communicationHandlerServicer):
     def WriteProcess(self, request, context):
         print(f"Proxy says: {request.data}")
-        return Communication_pb2.WriteResponse(message="Request received by leader!")
+        return Communication_pb2.WriteResponse(message="Write Request received by leader!")
+    
+    def ReadProcess(self, request, context):
+        print(f"Proxy says: {request.key}")
+        return Communication_pb2.ReadResponse(data="Read Request received by leader!")
 
 
 # Read from CSV method
@@ -78,7 +82,7 @@ def serve():
     node.add_insecure_port('[::]:50053')    # This must have to be changed later, it is like this only for local tests
     node.start()
     print("Node started on port 50053")
-    updateProxy("leader")
+    updateProxy("follower")
     try:
         while True:
             time.sleep(86400)  # Keep server alive

@@ -49,6 +49,11 @@ class communicationHandlerStub(object):
                 request_serializer=Communication__pb2.WriteRequest.SerializeToString,
                 response_deserializer=Communication__pb2.WriteResponse.FromString,
                 _registered_method=True)
+        self.ReadProcess = channel.unary_unary(
+                '/communicationHandler/ReadProcess',
+                request_serializer=Communication__pb2.ReadRequest.SerializeToString,
+                response_deserializer=Communication__pb2.ReadResponse.FromString,
+                _registered_method=True)
 
 
 class communicationHandlerServicer(object):
@@ -72,6 +77,12 @@ class communicationHandlerServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def ReadProcess(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_communicationHandlerServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -89,6 +100,11 @@ def add_communicationHandlerServicer_to_server(servicer, server):
                     servicer.WriteProcess,
                     request_deserializer=Communication__pb2.WriteRequest.FromString,
                     response_serializer=Communication__pb2.WriteResponse.SerializeToString,
+            ),
+            'ReadProcess': grpc.unary_unary_rpc_method_handler(
+                    servicer.ReadProcess,
+                    request_deserializer=Communication__pb2.ReadRequest.FromString,
+                    response_serializer=Communication__pb2.ReadResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -172,6 +188,33 @@ class communicationHandler(object):
             '/communicationHandler/WriteProcess',
             Communication__pb2.WriteRequest.SerializeToString,
             Communication__pb2.WriteResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def ReadProcess(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/communicationHandler/ReadProcess',
+            Communication__pb2.ReadRequest.SerializeToString,
+            Communication__pb2.ReadResponse.FromString,
             options,
             channel_credentials,
             insecure,

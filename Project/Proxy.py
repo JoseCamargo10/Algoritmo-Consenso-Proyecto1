@@ -42,6 +42,13 @@ def sendWrite(message):
 # --------------------------------------------------------------------------------------------------------------
 def sendRead(message):
     print(f"Read: {message}")
+    for key, value in nodes_info.items():
+        if value == "follower":
+            # Resend the message to leader
+            with grpc.insecure_channel(f"{key}:50053") as channel:
+                stub = Communication_pb2_grpc.communicationHandlerStub(channel)
+                response = stub.ReadProcess(Communication_pb2.ReadRequest(key = message))
+                print(f"Leader says: {response}")
 
 
 # Server configuration
