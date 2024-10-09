@@ -8,7 +8,6 @@ import Communication_pb2_grpc
 
 nodes_info = {}
 
-
 # gRPC communication class
 # --------------------------------------------------------------------------------------------------------------
 class communicationHandlerServicer(Communication_pb2_grpc.communicationHandlerServicer):
@@ -24,7 +23,7 @@ class communicationHandlerServicer(Communication_pb2_grpc.communicationHandlerSe
         nodes_info[request.ip] = request.role
         print()
         print(nodes_info)
-        return Communication_pb2.UpdateInfoResponse(response="Node updated on proxy!")
+        return Communication_pb2.UpdateInfoResponse(nodes_info = nodes_info)
 
 
 # Method to send writing to leader

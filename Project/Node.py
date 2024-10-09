@@ -6,10 +6,13 @@ import grpc
 from concurrent import futures
 import time
 import re
+from google.protobuf import empty_pb2
 
 # Import generated files (for gRPC communication)
 import Communication_pb2
 import Communication_pb2_grpc
+
+nodes_info = {}
 
 # gRPC communication class
 # --------------------------------------------------------------------------------------------------------------
@@ -82,8 +85,9 @@ def updateProxy(role):
     with grpc.insecure_channel("localhost:50052") as channel:
         stub = Communication_pb2_grpc.communicationHandlerStub(channel)
         response = stub.UpdateNodes(Communication_pb2.UpdateInfoRequest(ip=IPAddr, role=role))
+        nodes_info = response.nodes_info
         print()
-        print(f"Proxy says: {response.response}")
+        print(f"Local nodes hashmap: {nodes_info}")
 
 
 # Server configuration
