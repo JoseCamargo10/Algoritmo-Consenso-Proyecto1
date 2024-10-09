@@ -14,10 +14,12 @@ import Communication_pb2_grpc
 # --------------------------------------------------------------------------------------------------------------
 class communicationHandlerServicer(Communication_pb2_grpc.communicationHandlerServicer):
     def WriteProcess(self, request, context):
+        print()
         print(f"Proxy says: {request.data}")
         return Communication_pb2.WriteResponse(message="Write Request received by leader!")
     
     def ReadProcess(self, request, context):
+        print()
         print(f"Proxy says: {request.key}")
         return Communication_pb2.ReadResponse(data="Read Request received by leader!")
 
@@ -36,12 +38,15 @@ def reader(name, attribute, desiredValue):
                     results.append(row)
             
             if results:
+                print()
                 print(f"Result for '{desiredValue}' in column '{attribute}':")
                 for result in results:
                     print(result)
             else:
+                print()
                 print(f"Not finded results for '{desiredValue}' in column '{attribute}'")
     else:
+        print()
         print("This file doesn't exists!")
 
 
@@ -71,6 +76,7 @@ def updateProxy(role):
     with grpc.insecure_channel("localhost:50052") as channel:
         stub = Communication_pb2_grpc.communicationHandlerStub(channel)
         response = stub.UpdateNodes(Communication_pb2.UpdateInfoRequest(ip=IPAddr, role=role))
+        print()
         print(f"Proxy says: {response.response}")
 
 
@@ -81,8 +87,9 @@ def serve():
     Communication_pb2_grpc.add_communicationHandlerServicer_to_server(communicationHandlerServicer(), node)
     node.add_insecure_port('[::]:50053')    # This must have to be changed later, it is like this only for local tests
     node.start()
+    print()
     print("Node started on port 50053")
-    updateProxy("follower")
+    updateProxy("leader")
     try:
         while True:
             time.sleep(86400)  # Keep server alive

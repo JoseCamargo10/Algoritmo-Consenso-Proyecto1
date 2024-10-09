@@ -21,6 +21,7 @@ class communicationHandlerServicer(Communication_pb2_grpc.communicationHandlerSe
     
     def UpdateNodes(self, request, context):
         nodes_info[request.ip] = request.role
+        print()
         print(nodes_info)
         return Communication_pb2.UpdateInfoResponse(response="Node updated on proxy!")
 
@@ -28,6 +29,7 @@ class communicationHandlerServicer(Communication_pb2_grpc.communicationHandlerSe
 # Method to send writing to leader
 # --------------------------------------------------------------------------------------------------------------
 def sendWrite(message):
+    print()
     print(f"Write: {message}")
     for key, value in nodes_info.items():
         if value == "leader":
@@ -35,12 +37,14 @@ def sendWrite(message):
             with grpc.insecure_channel(f"{key}:50053") as channel:
                 stub = Communication_pb2_grpc.communicationHandlerStub(channel)
                 response = stub.WriteProcess(Communication_pb2.WriteRequest(data = message))
-                print(f"Leader says: {response}")
+                print()
+                print(f"Leader says: {response.message}")
 
 
 # Method to send reading to follower
 # --------------------------------------------------------------------------------------------------------------
 def sendRead(message):
+    print()
     print(f"Read: {message}")
     for key, value in nodes_info.items():
         if value == "follower":
@@ -48,7 +52,8 @@ def sendRead(message):
             with grpc.insecure_channel(f"{key}:50053") as channel:
                 stub = Communication_pb2_grpc.communicationHandlerStub(channel)
                 response = stub.ReadProcess(Communication_pb2.ReadRequest(key = message))
-                print(f"Leader says: {response}")
+                print()
+                print(f"Follower says: {response.data}")
 
 
 # Server configuration
@@ -59,6 +64,7 @@ def serve():
     proxy.add_insecure_port('[::]:50051')
     proxy.add_insecure_port('[::]:50052')
     proxy.start()
+    print()
     print("Proxy started on port 50051 and 50052")
     try:
         while True:
