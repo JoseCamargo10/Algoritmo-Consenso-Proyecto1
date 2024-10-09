@@ -90,6 +90,14 @@ def updateProxy(role):
         print(f"Local nodes hashmap: {nodes_info}")
 
 
+def notifyDisconnection():
+    hostname = socket.gethostname()
+    IPAddr = socket.gethostbyname(hostname)
+    with grpc.insecure_channel("localhost:50052") as channel:
+        stub = Communication_pb2_grpc.communicationHandlerStub(channel)
+        response = stub.UpdateNodes(Communication_pb2.DisconnectionRequest(address=IPAddr))
+
+
 # Server configuration
 # --------------------------------------------------------------------------------------------------------------
 def serve():
@@ -104,6 +112,7 @@ def serve():
         while True:
             time.sleep(86400)  # Keep server alive
     except KeyboardInterrupt:
+        notifyDisconnection()
         node.stop(0)
 
 

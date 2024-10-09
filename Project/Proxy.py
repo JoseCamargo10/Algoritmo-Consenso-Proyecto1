@@ -24,6 +24,11 @@ class communicationHandlerServicer(Communication_pb2_grpc.communicationHandlerSe
         print()
         print(nodes_info)
         return Communication_pb2.UpdateInfoResponse(nodes_info = nodes_info)
+    
+    def Disconnection(self, request, context):
+        address_to_remove = request.address
+        print(f"Hola? {address_to_remove}")
+        return Communication_pb2.DisconnectionResponse(message="1")
 
 
 # Method to send writing to leader

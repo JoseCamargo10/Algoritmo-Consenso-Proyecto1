@@ -45,6 +45,11 @@ class communicationHandlerStub(object):
                 request_serializer=Communication__pb2.UpdateInfoRequest.SerializeToString,
                 response_deserializer=Communication__pb2.UpdateInfoResponse.FromString,
                 _registered_method=True)
+        self.Disconnection = channel.unary_unary(
+                '/communicationHandler/Disconnection',
+                request_serializer=Communication__pb2.DisconnectionRequest.SerializeToString,
+                response_deserializer=Communication__pb2.DisconnectionResponse.FromString,
+                _registered_method=True)
         self.WriteProcess = channel.unary_unary(
                 '/communicationHandler/WriteProcess',
                 request_serializer=Communication__pb2.WriteRequest.SerializeToString,
@@ -72,6 +77,12 @@ class communicationHandlerServicer(object):
         raise NotImplementedError('Method not implemented!')
 
     def UpdateNodes(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def Disconnection(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -107,6 +118,11 @@ def add_communicationHandlerServicer_to_server(servicer, server):
                     servicer.UpdateNodes,
                     request_deserializer=Communication__pb2.UpdateInfoRequest.FromString,
                     response_serializer=Communication__pb2.UpdateInfoResponse.SerializeToString,
+            ),
+            'Disconnection': grpc.unary_unary_rpc_method_handler(
+                    servicer.Disconnection,
+                    request_deserializer=Communication__pb2.DisconnectionRequest.FromString,
+                    response_serializer=Communication__pb2.DisconnectionResponse.SerializeToString,
             ),
             'WriteProcess': grpc.unary_unary_rpc_method_handler(
                     servicer.WriteProcess,
@@ -178,6 +194,33 @@ class communicationHandler(object):
             '/communicationHandler/UpdateNodes',
             Communication__pb2.UpdateInfoRequest.SerializeToString,
             Communication__pb2.UpdateInfoResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def Disconnection(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/communicationHandler/Disconnection',
+            Communication__pb2.DisconnectionRequest.SerializeToString,
+            Communication__pb2.DisconnectionResponse.FromString,
             options,
             channel_credentials,
             insecure,

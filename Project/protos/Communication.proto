@@ -5,6 +5,7 @@ import "google/protobuf/empty.proto";
 service communicationHandler {
     rpc Client_Proxy(Request) returns (Response);
     rpc UpdateNodes(UpdateInfoRequest) returns (UpdateInfoResponse);
+    rpc Disconnection(DisconnectionRequest) returns (DisconnectionResponse);
     rpc WriteProcess(WriteRequest) returns (WriteResponse);
     rpc ReadProcess(ReadRequest) returns (ReadResponse);
     rpc Heartbeat(google.protobuf.Empty) returns (google.protobuf.Empty);
@@ -57,3 +58,16 @@ message ReadRequest {
 message ReadResponse {
     string data = 1;
 }
+// ------------------------------------------------------------------------
+
+// ------------------------------------------------------------------------
+// Message to notify disconnection
+message DisconnectionRequest {
+    string address = 1;
+}
+
+// Response to disconnection
+message DisconnectionResponse {
+    string message = 1;
+}
+// ------------------------------------------------------------------------
