@@ -5,6 +5,7 @@ import socket
 import grpc
 from concurrent import futures
 import time
+import re
 
 # Import generated files (for gRPC communication)
 import Communication_pb2
@@ -16,12 +17,19 @@ class communicationHandlerServicer(Communication_pb2_grpc.communicationHandlerSe
     def WriteProcess(self, request, context):
         print()
         print(f"Proxy says: {request.data}")
+        fileName = re.search(r"INTO\s+(\w+)\s*\(", request.data)
+        attributes = re.search(r"\((.*?)\)", request.data)
+        writer(fileName.group(1), attributes.group(1))
         return Communication_pb2.WriteResponse(message="Write Request received by leader!")
     
     def ReadProcess(self, request, context):
         print()
         print(f"Proxy says: {request.key}")
-        return Communication_pb2.ReadResponse(data="Read Request received by leader!")
+        fileName = re.search(r"FROM\s+(\w+)\s+WHERE", request.key)
+        attribute = re.search(r"WHERE\s+(\w+)\s*==", request.key)
+        value = re.search(r"==\s*(\w+)", request.key)
+        result = reader(fileName.group(1), attribute.group(1), value.group(1))
+        return Communication_pb2.ReadResponse(data=result)
 
 
 # Read from CSV method
@@ -39,15 +47,13 @@ def reader(name, attribute, desiredValue):
             
             if results:
                 print()
-                print(f"Result for '{desiredValue}' in column '{attribute}':")
-                for result in results:
-                    print(result)
+                return f"Result for '{desiredValue}' in column '{attribute}':\n {results}"
             else:
                 print()
-                print(f"Not finded results for '{desiredValue}' in column '{attribute}'")
+                return f"No results found for '{desiredValue}' in column '{attribute}'"
     else:
         print()
-        print("This file doesn't exists!")
+        return "This file doesn't exists!"
 
 
 # Write to CSV method
@@ -89,7 +95,7 @@ def serve():
     node.start()
     print()
     print("Node started on port 50053")
-    updateProxy("leader")
+    updateProxy("follower")
     try:
         while True:
             time.sleep(86400)  # Keep server alive

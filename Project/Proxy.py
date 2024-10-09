@@ -16,7 +16,8 @@ class communicationHandlerServicer(Communication_pb2_grpc.communicationHandlerSe
         if request.message.startswith("INSERT"):
             sendWrite(request.message)
         elif request.message.startswith("SELECT"):
-            sendRead(request.message)
+            readResponse = sendRead(request.message)
+            return Communication_pb2.Response(message=readResponse)
         return Communication_pb2.Response(message="Statement received!")
     
     def UpdateNodes(self, request, context):
@@ -53,7 +54,7 @@ def sendRead(message):
                 stub = Communication_pb2_grpc.communicationHandlerStub(channel)
                 response = stub.ReadProcess(Communication_pb2.ReadRequest(key = message))
                 print()
-                print(f"Follower says: {response.data}")
+                return response.data
 
 
 # Server configuration
