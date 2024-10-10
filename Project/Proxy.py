@@ -23,7 +23,7 @@ class communicationHandlerServicer(Communication_pb2_grpc.communicationHandlerSe
         nodes_info[request.ip] = request.role
         print()
         print(nodes_info)
-        disconnectionOrconnectionUpdate()
+        #disconnectionOrconnectionUpdate()
         return Communication_pb2.UpdateInfoResponse(nodes_info = nodes_info)
     
     def Disconnection(self, request, context):
