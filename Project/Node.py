@@ -36,6 +36,7 @@ class communicationHandlerServicer(Communication_pb2_grpc.communicationHandlerSe
     
     def DisconnectionUpdate(self, request, context):
         nodes_info = request.nodes_info
+        print(nodes_info)
         return Communication_pb2.Empty()
 
 
