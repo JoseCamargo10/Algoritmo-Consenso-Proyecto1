@@ -6,6 +6,7 @@ service communicationHandler {
     rpc Client_Proxy(Request) returns (Response);
     rpc UpdateNodes(UpdateInfoRequest) returns (UpdateInfoResponse);
     rpc Disconnection(DisconnectionRequest) returns (DisconnectionResponse);
+    rpc DisconnectionUpdate(UpdateInfoResponse) returns (google.protobuf.Empty);
     rpc WriteProcess(WriteRequest) returns (WriteResponse);
     rpc ReadProcess(ReadRequest) returns (ReadResponse);
     rpc Heartbeat(google.protobuf.Empty) returns (google.protobuf.Empty);

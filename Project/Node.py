@@ -33,6 +33,10 @@ class communicationHandlerServicer(Communication_pb2_grpc.communicationHandlerSe
         value = re.search(r"==\s*(\w+)", request.key)
         result = reader(fileName.group(1), attribute.group(1), value.group(1))
         return Communication_pb2.ReadResponse(data=result)
+    
+    def DisconnectionUpdate(self, request, context):
+        nodes_info = request.nodes_info
+        return Communication_pb2.Empty()
 
 
 # Read from CSV method
