@@ -23,19 +23,20 @@ class communicationHandlerServicer(Communication_pb2_grpc.communicationHandlerSe
         nodes_info[request.ip] = request.role
         print()
         print(nodes_info)
+        disconnectionOrconnectionUpdate()
         return Communication_pb2.UpdateInfoResponse(nodes_info = nodes_info)
     
     def Disconnection(self, request, context):
         del nodes_info[request.address]
         print(nodes_info)
         if nodes_info.items():
-            disconnectionUpdate()
+            disconnectionOrconnectionUpdate()
         return Communication_pb2.DisconnectionResponse(message="1")
 
 
-# Method to alert other nodes about the disconnection of one node
+# Method to alert other nodes about the disconnection of one node or connection of a new one
 # --------------------------------------------------------------------------------------------------------------
-def disconnectionUpdate():
+def disconnectionOrconnectionUpdate():
     for key, value in nodes_info.items():
         with grpc.insecure_channel(f"{key}:50053") as channel:
             stub = Communication_pb2_grpc.communicationHandlerStub(channel)
