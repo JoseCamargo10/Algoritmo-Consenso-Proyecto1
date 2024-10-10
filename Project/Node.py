@@ -95,7 +95,7 @@ def notifyDisconnection():
     IPAddr = socket.gethostbyname(hostname)
     with grpc.insecure_channel("localhost:50052") as channel:
         stub = Communication_pb2_grpc.communicationHandlerStub(channel)
-        response = stub.UpdateNodes(Communication_pb2.DisconnectionRequest(address=IPAddr))
+        response = stub.Disconnection(Communication_pb2.DisconnectionRequest(address=IPAddr))
 
 
 # Server configuration

@@ -26,8 +26,8 @@ class communicationHandlerServicer(Communication_pb2_grpc.communicationHandlerSe
         return Communication_pb2.UpdateInfoResponse(nodes_info = nodes_info)
     
     def Disconnection(self, request, context):
-        address_to_remove = request.address
-        print(f"Hola? {address_to_remove}")
+        del nodes_info[request.address]
+        print(nodes_info)
         return Communication_pb2.DisconnectionResponse(message="1")
 
 
