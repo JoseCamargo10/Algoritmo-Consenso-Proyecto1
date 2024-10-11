@@ -6,10 +6,21 @@ service communicationHandler {
     rpc Client_Proxy(Request) returns (Response);
     rpc UpdateNodes(UpdateInfoRequest) returns (UpdateInfoResponse);
     rpc Disconnection(DisconnectionRequest) returns (DisconnectionResponse);
-    rpc DisconnectionUpdate(UpdateInfoResponse) returns (google.protobuf.Empty);
+    rpc DisconnectionUpdate(UpdateInfoResponse) returns (GResponse);
     rpc WriteProcess(WriteRequest) returns (WriteResponse);
     rpc ReadProcess(ReadRequest) returns (ReadResponse);
     rpc Heartbeat(google.protobuf.Empty) returns (google.protobuf.Empty);
+}
+
+// ------------------------------------------------------------------------
+// Generic request
+message GRequest {
+    int32 number = 1;
+}
+
+// Generic response
+message GResponse {
+    int32 number = 1;
 }
 
 // ------------------------------------------------------------------------

@@ -23,7 +23,7 @@ class communicationHandlerServicer(Communication_pb2_grpc.communicationHandlerSe
         nodes_info[request.ip] = request.role
         print()
         print(nodes_info)
-        #disconnectionOrconnectionUpdate()
+        disconnectionOrconnectionUpdate()
         return Communication_pb2.UpdateInfoResponse(nodes_info = nodes_info)
     
     def Disconnection(self, request, context):
@@ -38,9 +38,12 @@ class communicationHandlerServicer(Communication_pb2_grpc.communicationHandlerSe
 # --------------------------------------------------------------------------------------------------------------
 def disconnectionOrconnectionUpdate():
     for key, value in nodes_info.items():
-        with grpc.insecure_channel(f"{key}:50053") as channel:
-            stub = Communication_pb2_grpc.communicationHandlerStub(channel)
-            response = stub.DisconnectionUpdate(Communication_pb2.UpdateInfoResponse(nodes_info = nodes_info))
+        try:
+            with grpc.insecure_channel(f"{key}:50053") as channel:
+                stub = Communication_pb2_grpc.communicationHandlerStub(channel)
+                response = stub.DisconnectionUpdate(Communication_pb2.UpdateInfoResponse(nodes_info = nodes_info))
+        except grpc.RpcError as e:
+            print(f"Error updating node {key}: {e}")
 
 
 # Method to send writing to leader

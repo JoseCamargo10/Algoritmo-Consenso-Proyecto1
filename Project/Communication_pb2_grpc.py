@@ -53,7 +53,7 @@ class communicationHandlerStub(object):
         self.DisconnectionUpdate = channel.unary_unary(
                 '/communicationHandler/DisconnectionUpdate',
                 request_serializer=Communication__pb2.UpdateInfoResponse.SerializeToString,
-                response_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
+                response_deserializer=Communication__pb2.GResponse.FromString,
                 _registered_method=True)
         self.WriteProcess = channel.unary_unary(
                 '/communicationHandler/WriteProcess',
@@ -138,7 +138,7 @@ def add_communicationHandlerServicer_to_server(servicer, server):
             'DisconnectionUpdate': grpc.unary_unary_rpc_method_handler(
                     servicer.DisconnectionUpdate,
                     request_deserializer=Communication__pb2.UpdateInfoResponse.FromString,
-                    response_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
+                    response_serializer=Communication__pb2.GResponse.SerializeToString,
             ),
             'WriteProcess': grpc.unary_unary_rpc_method_handler(
                     servicer.WriteProcess,
@@ -263,7 +263,7 @@ class communicationHandler(object):
             target,
             '/communicationHandler/DisconnectionUpdate',
             Communication__pb2.UpdateInfoResponse.SerializeToString,
-            google_dot_protobuf_dot_empty__pb2.Empty.FromString,
+            Communication__pb2.GResponse.FromString,
             options,
             channel_credentials,
             insecure,
