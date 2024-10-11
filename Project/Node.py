@@ -20,8 +20,7 @@ class communicationHandlerServicer(Communication_pb2_grpc.communicationHandlerSe
     def WriteProcess(self, request, context):
         print()
         print(f"Proxy says: {request.data}")
-        for key, value in nodes_info.items():
-            print(f"IP={key} | Role={value}")
+        resendWriteToFollowers(request.data)
         fileName = re.search(r"INTO\s+(\w+)\s*\(", request.data)
         attributes = re.search(r"\((.*?)\)", request.data)
         writer(fileName.group(1), attributes.group(1))
@@ -55,7 +54,7 @@ class communicationHandlerServicer(Communication_pb2_grpc.communicationHandlerSe
 def resendWriteToFollowers(data):
     for key, value in nodes_info.items():
             print(f"IP={key} | Role={value}")
-            if value == "follower":
+            '''if value == "follower":
                 #Append
                 print(f"A follower has been detected with ip = {key}")
                 try:
@@ -63,7 +62,7 @@ def resendWriteToFollowers(data):
                         stub = Communication_pb2_grpc.communicationHandlerStub(channel)
                         response = stub.AppendEntries(Communication_pb2.WriteRequest(data = data))
                 except grpc.RpcError as e:
-                    print(f"Failed to send append to follower at {key}: {e}")
+                    print(f"Failed to send append to follower at {key}: {e}")'''
 
 
 # Read from CSV method
