@@ -4,7 +4,6 @@ import grpc
 import warnings
 
 import Communication_pb2 as Communication__pb2
-from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
 
 GRPC_GENERATED_VERSION = '1.66.2'
 GRPC_VERSION = grpc.__version__
@@ -65,10 +64,15 @@ class communicationHandlerStub(object):
                 request_serializer=Communication__pb2.ReadRequest.SerializeToString,
                 response_deserializer=Communication__pb2.ReadResponse.FromString,
                 _registered_method=True)
+        self.AppendEntries = channel.unary_unary(
+                '/communicationHandler/AppendEntries',
+                request_serializer=Communication__pb2.WriteRequest.SerializeToString,
+                response_deserializer=Communication__pb2.GResponse.FromString,
+                _registered_method=True)
         self.Heartbeat = channel.unary_unary(
                 '/communicationHandler/Heartbeat',
-                request_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
-                response_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
+                request_serializer=Communication__pb2.GRequest.SerializeToString,
+                response_deserializer=Communication__pb2.GResponse.FromString,
                 _registered_method=True)
 
 
@@ -106,6 +110,12 @@ class communicationHandlerServicer(object):
         raise NotImplementedError('Method not implemented!')
 
     def ReadProcess(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def AppendEntries(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -150,10 +160,15 @@ def add_communicationHandlerServicer_to_server(servicer, server):
                     request_deserializer=Communication__pb2.ReadRequest.FromString,
                     response_serializer=Communication__pb2.ReadResponse.SerializeToString,
             ),
+            'AppendEntries': grpc.unary_unary_rpc_method_handler(
+                    servicer.AppendEntries,
+                    request_deserializer=Communication__pb2.WriteRequest.FromString,
+                    response_serializer=Communication__pb2.GResponse.SerializeToString,
+            ),
             'Heartbeat': grpc.unary_unary_rpc_method_handler(
                     servicer.Heartbeat,
-                    request_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
-                    response_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
+                    request_deserializer=Communication__pb2.GRequest.FromString,
+                    response_serializer=Communication__pb2.GResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -329,6 +344,33 @@ class communicationHandler(object):
             _registered_method=True)
 
     @staticmethod
+    def AppendEntries(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/communicationHandler/AppendEntries',
+            Communication__pb2.WriteRequest.SerializeToString,
+            Communication__pb2.GResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
     def Heartbeat(request,
             target,
             options=(),
@@ -343,8 +385,8 @@ class communicationHandler(object):
             request,
             target,
             '/communicationHandler/Heartbeat',
-            google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
-            google_dot_protobuf_dot_empty__pb2.Empty.FromString,
+            Communication__pb2.GRequest.SerializeToString,
+            Communication__pb2.GResponse.FromString,
             options,
             channel_credentials,
             insecure,

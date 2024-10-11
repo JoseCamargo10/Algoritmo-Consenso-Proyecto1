@@ -1,7 +1,5 @@
 syntax = "proto3";
 
-import "google/protobuf/empty.proto";
-
 service communicationHandler {
     rpc Client_Proxy(Request) returns (Response);
     rpc UpdateNodes(UpdateInfoRequest) returns (UpdateInfoResponse);
@@ -9,7 +7,8 @@ service communicationHandler {
     rpc DisconnectionUpdate(UpdateInfoResponse) returns (GResponse);
     rpc WriteProcess(WriteRequest) returns (WriteResponse);
     rpc ReadProcess(ReadRequest) returns (ReadResponse);
-    rpc Heartbeat(google.protobuf.Empty) returns (google.protobuf.Empty);
+    rpc AppendEntries(WriteRequest) returns (GResponse);
+    rpc Heartbeat(GRequest) returns (GResponse);
 }
 
 // ------------------------------------------------------------------------
@@ -22,6 +21,7 @@ message GRequest {
 message GResponse {
     int32 number = 1;
 }
+// ------------------------------------------------------------------------
 
 // ------------------------------------------------------------------------
 // Client_Proxy request

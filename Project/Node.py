@@ -20,6 +20,12 @@ class communicationHandlerServicer(Communication_pb2_grpc.communicationHandlerSe
     def WriteProcess(self, request, context):
         print()
         print(f"Proxy says: {request.data}")
+        for key, value in nodes_info.items():
+            if value == "follower":
+                #Append
+                with grpc.insecure_channel(f"{key}:50053") as channel:
+                    stub = Communication_pb2_grpc.communicationHandlerStub(channel)
+                    response = stub.AppendEntries(Communication_pb2.WriteRequest(data = request.data))
         fileName = re.search(r"INTO\s+(\w+)\s*\(", request.data)
         attributes = re.search(r"\((.*?)\)", request.data)
         writer(fileName.group(1), attributes.group(1))
@@ -37,6 +43,14 @@ class communicationHandlerServicer(Communication_pb2_grpc.communicationHandlerSe
     def DisconnectionUpdate(self, request, context):
         nodes_info = request.nodes_info
         print(nodes_info)
+        return Communication_pb2.GResponse(number = 1)
+    
+    def AppendEntries(self, request, context):
+        print()
+        print(f"Leader says: {request.data}")
+        fileName = re.search(r"INTO\s+(\w+)\s*\(", request.data)
+        attributes = re.search(r"\((.*?)\)", request.data)
+        writer(fileName.group(1), attributes.group(1))
         return Communication_pb2.GResponse(number = 1)
 
 
