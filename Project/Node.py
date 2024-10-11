@@ -24,9 +24,12 @@ class communicationHandlerServicer(Communication_pb2_grpc.communicationHandlerSe
             if value == "follower":
                 #Append
                 print(f"A follower has been detected with ip = {key}")
-                with grpc.insecure_channel(f"{key}:50053") as channel:
-                    stub = Communication_pb2_grpc.communicationHandlerStub(channel)
-                    response = stub.AppendEntries(Communication_pb2.WriteRequest(data = request.data))
+                try:
+                    with grpc.insecure_channel(f"{key}:50053") as channel:
+                        stub = Communication_pb2_grpc.communicationHandlerStub(channel)
+                        response = stub.AppendEntries(Communication_pb2.WriteRequest(data = request.data))
+                except grpc.RpcError as e:
+                    print(f"Failed to send append to follower at {key}: {e}")
         fileName = re.search(r"INTO\s+(\w+)\s*\(", request.data)
         attributes = re.search(r"\((.*?)\)", request.data)
         writer(fileName.group(1), attributes.group(1))
@@ -102,7 +105,7 @@ def updateProxy(role):
     hostname = socket.gethostname()
     IPAddr = socket.gethostbyname(hostname)
 
-    with grpc.insecure_channel("localhost:50052") as channel:
+    with grpc.insecure_channel("98.84.32.154:50052") as channel:
         stub = Communication_pb2_grpc.communicationHandlerStub(channel)
         response = stub.UpdateNodes(Communication_pb2.UpdateInfoRequest(ip=IPAddr, role=role))
         nodes_info = response.nodes_info
@@ -113,7 +116,7 @@ def updateProxy(role):
 def notifyDisconnection():
     hostname = socket.gethostname()
     IPAddr = socket.gethostbyname(hostname)
-    with grpc.insecure_channel("localhost:50052") as channel:
+    with grpc.insecure_channel("98.84.32.154:50052") as channel:
         stub = Communication_pb2_grpc.communicationHandlerStub(channel)
         response = stub.Disconnection(Communication_pb2.DisconnectionRequest(address=IPAddr))
 
