@@ -23,6 +23,7 @@ class communicationHandlerServicer(Communication_pb2_grpc.communicationHandlerSe
         for key, value in nodes_info.items():
             if value == "follower":
                 #Append
+                print(f"A follower has been detected with ip = {key}")
                 with grpc.insecure_channel(f"{key}:50053") as channel:
                     stub = Communication_pb2_grpc.communicationHandlerStub(channel)
                     response = stub.AppendEntries(Communication_pb2.WriteRequest(data = request.data))
