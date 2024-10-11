@@ -53,16 +53,16 @@ class communicationHandlerServicer(Communication_pb2_grpc.communicationHandlerSe
 # --------------------------------------------------------------------------------------------------------------
 def resendWriteToFollowers(data):
     for key, value in nodes_info.items():
-            print(f"IP={key} | Role={value}")
-            '''if value == "follower":
-                #Append
-                print(f"A follower has been detected with ip = {key}")
-                try:
-                    with grpc.insecure_channel(f"{key}:50053") as channel:
-                        stub = Communication_pb2_grpc.communicationHandlerStub(channel)
-                        response = stub.AppendEntries(Communication_pb2.WriteRequest(data = data))
-                except grpc.RpcError as e:
-                    print(f"Failed to send append to follower at {key}: {e}")'''
+        print(f"IP={key} | Role={value}")
+        '''if value == "follower":
+            #Append
+            print(f"A follower has been detected with ip = {key}")
+            try:
+                with grpc.insecure_channel(f"{key}:50053") as channel:
+                    stub = Communication_pb2_grpc.communicationHandlerStub(channel)
+                    response = stub.AppendEntries(Communication_pb2.WriteRequest(data = data))
+            except grpc.RpcError as e:
+                print(f"Failed to send append to follower at {key}: {e}")'''
 
 
 # Read from CSV method
