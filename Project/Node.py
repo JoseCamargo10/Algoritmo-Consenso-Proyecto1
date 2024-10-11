@@ -21,6 +21,7 @@ class communicationHandlerServicer(Communication_pb2_grpc.communicationHandlerSe
         print()
         print(f"Proxy says: {request.data}")
         for key, value in nodes_info.items():
+            print(f"IP={key} | Role={value}")
             if value == "follower":
                 #Append
                 print(f"A follower has been detected with ip = {key}")
