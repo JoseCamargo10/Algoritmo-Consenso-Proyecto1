@@ -140,9 +140,11 @@ def updateProxy(role):
                 if array.array:
                     for statement in array.array:
                         print(statement)
-                        '''fileName = re.search(r"INTO\s+(\w+)\s*\(", statement)
+                        fileName = re.search(r"INTO\s+(\w+)\s*\(", statement)
+                        print(fileName)
                         attributes = re.search(r"\((.*?)\)", statement)
-                        writer(fileName, attributes, statement)'''
+                        print(attributes)
+                        #writer(fileName, attributes, statement)
 
 
 def notifyDisconnection():
