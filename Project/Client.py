@@ -10,7 +10,7 @@ import Communication_pb2_grpc
 def write(statement):
     print(statement)
      # Connect to server (in this case, to proxy)
-    with grpc.insecure_channel("18.209.107.5:50051") as channel:   # Here we must change with ip adress and port for AWS
+    with grpc.insecure_channel("3.84.177.11:50051") as channel:   # Here we must change with ip adress and port for AWS
         stub = Communication_pb2_grpc.communicationHandlerStub(channel)
 
         response = stub.Client_Proxy(Communication_pb2.Request(message=statement))
@@ -20,7 +20,7 @@ def write(statement):
 def read(statement):
     print(statement)
     # Connect to server (in this case, to proxy)
-    with grpc.insecure_channel("18.209.107.5:50051") as channel:   # Here we must change with ip adress and port for AWS
+    with grpc.insecure_channel("3.84.177.11:50051") as channel:   # Here we must change with ip adress and port for AWS
         stub = Communication_pb2_grpc.communicationHandlerStub(channel)
 
         response = stub.Client_Proxy(Communication_pb2.Request(message=statement))
