@@ -134,7 +134,7 @@ def updateProxy(role):
     # Method to update new nodes' dbs
     for key, value in nodes_info.items():
         if value == "leader" and key != IPAddr:
-            with grpc.insecure_channel(f"{key}:50052") as channel:
+            with grpc.insecure_channel(f"{key}:50053") as channel:
                 stub = Communication_pb2_grpc.communicationHandlerStub(channel)
                 array = stub.UpdateWriteArray(Communication_pb2.ArrayRequest(message = f"Request for array from '{key}'"))
                 for statement in array:
