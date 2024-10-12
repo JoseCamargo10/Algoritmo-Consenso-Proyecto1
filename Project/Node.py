@@ -37,6 +37,7 @@ class communicationHandlerServicer(Communication_pb2_grpc.communicationHandlerSe
         return Communication_pb2.ReadResponse(data=result)
     
     def DisconnectionUpdate(self, request, context):
+        global nodes_info
         nodes_info = request.nodes_info
         print(nodes_info)
         return Communication_pb2.GResponse(number = 1)
@@ -110,6 +111,7 @@ def writer(name, attributes):
 # Method to say to proxy that this node is online with a role
 # --------------------------------------------------------------------------------------------------------------
 def updateProxy(role):
+    global nodes_info
     hostname = socket.gethostname()
     IPAddr = socket.gethostbyname(hostname)
 
