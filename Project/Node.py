@@ -138,10 +138,10 @@ def updateProxy(role):
                 stub = Communication_pb2_grpc.communicationHandlerStub(channel)
                 array = stub.UpdateWriteArray(Communication_pb2.ArrayRequest(message = f"Request for array from '{key}'"))
                 print(array)
-                for statement in array:
+                '''for statement in array:
                     fileName = re.search(r"INTO\s+(\w+)\s*\(", statement)
                     attributes = re.search(r"\((.*?)\)", statement)
-                    writer(fileName, attributes, statement)
+                    writer(fileName, attributes, statement)'''
 
 
 def notifyDisconnection():
