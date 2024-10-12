@@ -106,11 +106,13 @@ def writer(name, attributes, statement):
     headers = [["Brand", "Country", "Year"]]
     fileName = f"{name}.csv"
 
-    if not os.path.exists(fileName):
-        with open (fileName, mode='w', newline='') as csvfile:
-            firstwriter = csv.writer(csvfile)
-            firstwriter.writerows(headers)
+    if os.path.exists(fileName):
+        os.remove(fileName)
     
+    with open (fileName, mode='w', newline='') as csvfile:
+        firstwriter = csv.writer(csvfile)
+        firstwriter.writerows(headers)
+
     attributes_list = [attributes.split(",")]
     with open (fileName, mode='a', newline='') as csvfile:
         writer = csv.writer(csvfile)
@@ -138,6 +140,8 @@ def updateProxy(role):
                 stub = Communication_pb2_grpc.communicationHandlerStub(channel)
                 array = stub.UpdateWriteArray(Communication_pb2.ArrayRequest(message = f"Request for array from '{key}'"))
                 if array.array:
+                    print()
+                    print("Restoring from leader's copy...")
                     for statement in array.array:
                         print()
                         print(f"Loading from Leader: {statement}")
