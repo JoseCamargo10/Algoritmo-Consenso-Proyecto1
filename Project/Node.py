@@ -20,7 +20,7 @@ class communicationHandlerServicer(Communication_pb2_grpc.communicationHandlerSe
     def WriteProcess(self, request, context):
         print()
         print(f"Proxy says: {request.data}")
-        resendWriteToFollowers(request.data)
+        print(f"Hola a ver si funciona {request.data}")
         fileName = re.search(r"INTO\s+(\w+)\s*\(", request.data)
         attributes = re.search(r"\((.*?)\)", request.data)
         writer(fileName.group(1), attributes.group(1))
@@ -51,10 +51,10 @@ class communicationHandlerServicer(Communication_pb2_grpc.communicationHandlerSe
 
 # Read from CSV method
 # --------------------------------------------------------------------------------------------------------------
-def resendWriteToFollowers(data):
+'''def resendWriteToFollowers(data):
     for key, value in nodes_info.items():
         print(f"IP={key} | Role={value}")
-        '''if value == "follower":
+        if value == "follower":
             #Append
             print(f"A follower has been detected with ip = {key}")
             try:
@@ -112,7 +112,7 @@ def updateProxy(role):
     hostname = socket.gethostname()
     IPAddr = socket.gethostbyname(hostname)
 
-    with grpc.insecure_channel("98.84.32.154:50052") as channel:
+    with grpc.insecure_channel("18.209.107.5:50052") as channel:
         stub = Communication_pb2_grpc.communicationHandlerStub(channel)
         response = stub.UpdateNodes(Communication_pb2.UpdateInfoRequest(ip=IPAddr, role=role))
         nodes_info = response.nodes_info
@@ -123,7 +123,7 @@ def updateProxy(role):
 def notifyDisconnection():
     hostname = socket.gethostname()
     IPAddr = socket.gethostbyname(hostname)
-    with grpc.insecure_channel("98.84.32.154:50052") as channel:
+    with grpc.insecure_channel("18.209.107.5:50052") as channel:
         stub = Communication_pb2_grpc.communicationHandlerStub(channel)
         response = stub.Disconnection(Communication_pb2.DisconnectionRequest(address=IPAddr))
 
