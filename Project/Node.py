@@ -20,11 +20,7 @@ class communicationHandlerServicer(Communication_pb2_grpc.communicationHandlerSe
     def WriteProcess(self, request, context):
         print()
         print(f"Proxy says: {request.data}")
-        for key, value in nodes_info.items():
-            print(f"IP={key} | Role={value}")
-            if value == "follower":
-                #Append
-                print(f"A follower has been detected with ip = {key}")
+        resendWriteToFollowers(request.data)
         fileName = re.search(r"INTO\s+(\w+)\s*\(", request.data)
         attributes = re.search(r"\((.*?)\)", request.data)
         writer(fileName.group(1), attributes.group(1))
@@ -57,10 +53,12 @@ class communicationHandlerServicer(Communication_pb2_grpc.communicationHandlerSe
 # Resend writing process from leader to followers
 # --------------------------------------------------------------------------------------------------------------
 def resendWriteToFollowers(data):
+    print()
     for key, value in nodes_info.items():
         print(f"IP={key} | Role={value}")
         if value == "follower":
             #Append
+            print()
             print(f"A follower has been detected with ip = {key}")
             try:
                 with grpc.insecure_channel(f"{key}:50053") as channel:
