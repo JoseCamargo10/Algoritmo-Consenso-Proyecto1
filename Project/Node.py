@@ -141,9 +141,9 @@ def updateProxy(role):
                     for statement in array.array:
                         print(statement)
                         fileName = re.search(r"INTO\s+(\w+)\s*\(", statement)
-                        print(fileName)
+                        print(fileName.group(1))
                         attributes = re.search(r"\((.*?)\)", statement)
-                        print(attributes)
+                        print(attributes.group(1))
                         #writer(fileName, attributes, statement)
 
 
