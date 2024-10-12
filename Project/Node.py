@@ -137,14 +137,11 @@ def updateProxy(role):
             with grpc.insecure_channel(f"{key}:50053") as channel:
                 stub = Communication_pb2_grpc.communicationHandlerStub(channel)
                 array = stub.UpdateWriteArray(Communication_pb2.ArrayRequest(message = f"Request for array from '{key}'"))
-                if array:
-                    print("Algo")
-                else:
-                    print("Vacío")
-                '''for statement in array:
-                    fileName = re.search(r"INTO\s+(\w+)\s*\(", statement)
-                    attributes = re.search(r"\((.*?)\)", statement)
-                    writer(fileName, attributes, statement)'''
+                if array.array:
+                    for statement in array.array:
+                        fileName = re.search(r"INTO\s+(\w+)\s*\(", statement)
+                        attributes = re.search(r"\((.*?)\)", statement)
+                        writer(fileName, attributes, statement)
 
 
 def notifyDisconnection():
