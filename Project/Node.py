@@ -137,8 +137,10 @@ def updateProxy(role):
             with grpc.insecure_channel(f"{key}:50053") as channel:
                 stub = Communication_pb2_grpc.communicationHandlerStub(channel)
                 array = stub.UpdateWriteArray(Communication_pb2.ArrayRequest(message = f"Request for array from '{key}'"))
-                print("Hola mundo")
-                print(array)
+                if array:
+                    print("Algo")
+                else:
+                    print("Vacío")
                 '''for statement in array:
                     fileName = re.search(r"INTO\s+(\w+)\s*\(", statement)
                     attributes = re.search(r"\((.*?)\)", statement)
