@@ -164,6 +164,8 @@ def serve():
     node = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     Communication_pb2_grpc.add_communicationHandlerServicer_to_server(communicationHandlerServicer(), node)
     node.add_insecure_port('[::]:50053')    # This must have to be changed later, it is like this only for local tests
+    if os.path.exists("Cars.csv"):
+        os.remove("Cars.csv")
     node.start()
     print()
     print("Node started on port 50053")
