@@ -1,14 +1,14 @@
 syntax = "proto3";
 
 service communicationHandler {
-    rpc Client_Proxy(Request) returns (Response);
-    rpc UpdateNodes(UpdateInfoRequest) returns (UpdateInfoResponse);
-    rpc Disconnection(DisconnectionRequest) returns (DisconnectionResponse);
-    rpc DisconnectionUpdate(UpdateInfoResponse) returns (GResponse);
-    rpc WriteProcess(WriteRequest) returns (WriteResponse);
-    rpc ReadProcess(ReadRequest) returns (ReadResponse);
-    rpc AppendEntries(WriteRequest) returns (GResponse);
-    rpc Heartbeat(GRequest) returns (GResponse);
+    rpc Client_Proxy(Request) returns (Response);   // Communication between Client and Proxy
+    rpc UpdateNodes(UpdateInfoRequest) returns (UpdateInfoResponse);    // For Proxy know who nodes are online and it's roles
+    rpc Disconnection(DisconnectionRequest) returns (DisconnectionResponse);    // To delete a node from Proxy's hashmap
+    rpc DisconnectionUpdate(UpdateInfoResponse) returns (GResponse);    // To delete a node from other nodes' hashmaps
+    rpc WriteProcess(WriteRequest) returns (WriteResponse); // Write proccess to send from Proxy to Leader
+    rpc ReadProcess(ReadRequest) returns (ReadResponse);    // Read process to send from Proxy to one Follower
+    rpc AppendEntries(WriteRequest) returns (GResponse);    // To write on Followers from Leader
+    rpc Heartbeat(GRequest) returns (GResponse);            // Heartbeat to warn of Leader existence
 }
 
 // ------------------------------------------------------------------------

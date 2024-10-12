@@ -80,49 +80,57 @@ class communicationHandlerServicer(object):
     """Missing associated documentation comment in .proto file."""
 
     def Client_Proxy(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """Communication between Client and Proxy
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def UpdateNodes(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """For Proxy know who nodes are online and it's roles
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def Disconnection(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """To delete a node from Proxy's hashmap
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def DisconnectionUpdate(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """To delete a node from other nodes' hashmaps
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def WriteProcess(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """Write proccess to send from Proxy to Leader
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def ReadProcess(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """Read process to send from Proxy to one Follower
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def AppendEntries(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """To write on Followers from Leader
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def Heartbeat(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """Heartbeat to warn of Leader existence
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')

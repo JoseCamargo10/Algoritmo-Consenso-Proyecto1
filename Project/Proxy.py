@@ -74,7 +74,7 @@ def sendRead(message):
     if not followers:
         return "No followers available for this read request!"
     
-    selected_follower = followers[read_index % len(followers)]  # Round Eobin to select the follower
+    selected_follower = followers[read_index % len(followers)]  # Round Robin to select the follower
     read_index += 1     # Next follower to next request
     print(f"Sending read request to follower at {selected_follower}")
 
@@ -87,15 +87,6 @@ def sendRead(message):
     except grpc.RPCError as e:
         print(f"Failed to send read to follower at {selected_follower}: {e}")
         return "Read request failed."
-
-    '''for key, value in nodes_info.items():
-        if value == "follower":
-            # Resend the message to follower
-            with grpc.insecure_channel(f"{key}:50053") as channel:
-                stub = Communication_pb2_grpc.communicationHandlerStub(channel)
-                response = stub.ReadProcess(Communication_pb2.ReadRequest(key = message))
-                print()
-                return response.data'''
 
 
 # Server configuration

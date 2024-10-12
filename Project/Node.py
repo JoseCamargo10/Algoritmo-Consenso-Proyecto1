@@ -1,4 +1,3 @@
-import raft
 import csv
 import os
 import socket
@@ -6,7 +5,6 @@ import grpc
 from concurrent import futures
 import time
 import re
-from google.protobuf import empty_pb2
 
 # Import generated files (for gRPC communication)
 import Communication_pb2
@@ -153,7 +151,4 @@ def serve():
 # Main Method
 # --------------------------------------------------------------------------------------------------------------
 if __name__ == '__main__':
-    '''writer("Cars", "Chevrolet,USA,1980")
-    writer("Cars", "Ferrari,Italy,1980")
-    reader("Cars", "Year", "1980")'''
     serve()
