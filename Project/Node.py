@@ -11,17 +11,19 @@ import Communication_pb2
 import Communication_pb2_grpc
 
 nodes_info = {}
+write_array = []
 
 # gRPC communication class
 # --------------------------------------------------------------------------------------------------------------
 class communicationHandlerServicer(Communication_pb2_grpc.communicationHandlerServicer):
     def WriteProcess(self, request, context):
+        global write_array
         print()
         print(f"Proxy says: {request.data}")
         resendWriteToFollowers(request.data)
         fileName = re.search(r"INTO\s+(\w+)\s*\(", request.data)
         attributes = re.search(r"\((.*?)\)", request.data)
-        writer(fileName.group(1), attributes.group(1))
+        writer(fileName.group(1), attributes.group(1), request.data)
         return Communication_pb2.WriteResponse(message="Write Request received by leader!")
     
     def ReadProcess(self, request, context):
@@ -44,8 +46,14 @@ class communicationHandlerServicer(Communication_pb2_grpc.communicationHandlerSe
         print(f"Leader says: {request.data}")
         fileName = re.search(r"INTO\s+(\w+)\s*\(", request.data)
         attributes = re.search(r"\((.*?)\)", request.data)
-        writer(fileName.group(1), attributes.group(1))
+        writer(fileName.group(1), attributes.group(1), request.data)
         return Communication_pb2.GResponse(number = 1)
+    
+    def UpdateWriteArray(self, request, context):
+        global write_array
+        print()
+        print(f"New node says: {request.message}")
+        return Communication_pb2.Array(array = write_array)
 
 
 # Resend writing process from leader to followers
@@ -92,7 +100,9 @@ def reader(name, attribute, desiredValue):
 
 # Write to CSV method
 # --------------------------------------------------------------------------------------------------------------
-def writer(name, attributes):
+def writer(name, attributes, statement):
+    global write_array
+    write_array.append(statement)
     headers = [["Brand", "Country", "Year"]]
     fileName = f"{name}.csv"
 
@@ -120,6 +130,17 @@ def updateProxy(role):
         nodes_info = response.nodes_info
         print()
         print(f"Local nodes hashmap: {nodes_info}")
+
+    # Method to update new nodes' dbs
+    for key, value in nodes_info.items():
+        if value == "leader" and key != IPAddr:
+            with grpc.insecure_channel(f"{key}:50052") as channel:
+                stub = Communication_pb2_grpc.communicationHandlerStub(channel)
+                array = stub.UpdateWriteArray(Communication_pb2.ArrayRequest(message = f"Request for array from '{key}'"))
+                for statement in array:
+                    fileName = re.search(r"INTO\s+(\w+)\s*\(", statement)
+                    attributes = re.search(r"\((.*?)\)", statement)
+                    writer(fileName, attributes, statement)
 
 
 def notifyDisconnection():

@@ -69,6 +69,11 @@ class communicationHandlerStub(object):
                 request_serializer=Communication__pb2.WriteRequest.SerializeToString,
                 response_deserializer=Communication__pb2.GResponse.FromString,
                 _registered_method=True)
+        self.UpdateWriteArray = channel.unary_unary(
+                '/communicationHandler/UpdateWriteArray',
+                request_serializer=Communication__pb2.ArrayRequest.SerializeToString,
+                response_deserializer=Communication__pb2.Array.FromString,
+                _registered_method=True)
         self.Heartbeat = channel.unary_unary(
                 '/communicationHandler/Heartbeat',
                 request_serializer=Communication__pb2.GRequest.SerializeToString,
@@ -128,6 +133,13 @@ class communicationHandlerServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def UpdateWriteArray(self, request, context):
+        """A new node asks to Leader for the log of writing
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
     def Heartbeat(self, request, context):
         """Heartbeat to warn of Leader existence
         """
@@ -172,6 +184,11 @@ def add_communicationHandlerServicer_to_server(servicer, server):
                     servicer.AppendEntries,
                     request_deserializer=Communication__pb2.WriteRequest.FromString,
                     response_serializer=Communication__pb2.GResponse.SerializeToString,
+            ),
+            'UpdateWriteArray': grpc.unary_unary_rpc_method_handler(
+                    servicer.UpdateWriteArray,
+                    request_deserializer=Communication__pb2.ArrayRequest.FromString,
+                    response_serializer=Communication__pb2.Array.SerializeToString,
             ),
             'Heartbeat': grpc.unary_unary_rpc_method_handler(
                     servicer.Heartbeat,
@@ -368,6 +385,33 @@ class communicationHandler(object):
             '/communicationHandler/AppendEntries',
             Communication__pb2.WriteRequest.SerializeToString,
             Communication__pb2.GResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def UpdateWriteArray(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/communicationHandler/UpdateWriteArray',
+            Communication__pb2.ArrayRequest.SerializeToString,
+            Communication__pb2.Array.FromString,
             options,
             channel_credentials,
             insecure,

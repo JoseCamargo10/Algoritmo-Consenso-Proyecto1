@@ -8,6 +8,7 @@ service communicationHandler {
     rpc WriteProcess(WriteRequest) returns (WriteResponse); // Write proccess to send from Proxy to Leader
     rpc ReadProcess(ReadRequest) returns (ReadResponse);    // Read process to send from Proxy to one Follower
     rpc AppendEntries(WriteRequest) returns (GResponse);    // To write on Followers from Leader
+    rpc UpdateWriteArray(ArrayRequest) returns (Array);     // A new node asks to Leader for the log of writing
     rpc Heartbeat(GRequest) returns (GResponse);            // Heartbeat to warn of Leader existence
 }
 
@@ -81,5 +82,17 @@ message DisconnectionRequest {
 // Response to disconnection
 message DisconnectionResponse {
     string message = 1;
+}
+// ------------------------------------------------------------------------
+
+// ------------------------------------------------------------------------
+// Array Request
+message ArrayRequest {
+    string message = 1;
+}
+
+// Array Response
+message Array {
+    repeated string array = 1;
 }
 // ------------------------------------------------------------------------
