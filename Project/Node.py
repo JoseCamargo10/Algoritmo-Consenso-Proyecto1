@@ -139,12 +139,11 @@ def updateProxy(role):
                 array = stub.UpdateWriteArray(Communication_pb2.ArrayRequest(message = f"Request for array from '{key}'"))
                 if array.array:
                     for statement in array.array:
-                        print(statement)
+                        print()
+                        print(f"Loading from Leader: {statement}")
                         fileName = re.search(r"INTO\s+(\w+)\s*\(", statement)
-                        print(fileName.group(1))
                         attributes = re.search(r"\((.*?)\)", statement)
-                        print(attributes.group(1))
-                        #writer(fileName, attributes, statement)
+                        writer(fileName.group(1), attributes.group(1), statement)
 
 
 def notifyDisconnection():
