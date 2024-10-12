@@ -21,11 +21,7 @@ class communicationHandlerServicer(Communication_pb2_grpc.communicationHandlerSe
         print()
         print(f"Proxy says: {request.data}")
         print("Hola")
-        for key, value in nodes_info.items():
-            print(f"IP={key} | Role={value}")
-            if value == "follower":
-                #Append
-                print(f"A follower has been detected with ip = {key}")
+        print(nodes_info)
         fileName = re.search(r"INTO\s+(\w+)\s*\(", request.data)
         attributes = re.search(r"\((.*?)\)", request.data)
         writer(fileName.group(1), attributes.group(1))
