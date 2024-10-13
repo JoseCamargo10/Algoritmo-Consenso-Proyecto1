@@ -183,11 +183,15 @@ EL proyecto solo necesita compilar el archivo *"Communication.proto"*, que es el
 
     $ python3 -m grpc_tools.protoc -I protos --python_out=. --grpc_python_out=. protos/Communication.proto
 
-Para ejecutar el código, hay que ubicarse en la carpeta *"/Project"* y aquí ejecutar los comandos ya conocidos de Python:
+Para ejecutar el código, hay que ubicarse en la carpeta *"/Project"* y aquí ejecutar los comandos ya conocidos de Python (con los archivos *"Client.py"*, *"Node.py"*, *"Proxy.py"*):
 
     $ python3 Nombre_del_Archivo.py
 
 ### 3.2. Detalles del Desarrollo
+- El programa fue desarrollado en una máquina Windows, pero los comandos compartidos en este documento son de máquina Linux, dado que para ver la funcionalidad completa debe hacerse uso de varias máquinas comunicadas entre sí (el código utiliza unos comandos para definir la dirección IP de la máquina, por lo que al ejecutar todo en la misma, se darían unos problemas de comunicación al confundir los nodos entre sí).
+- El programa sigue la secuencia en la que el Cliente hace una petición que recepciona el Proxy, y el Proxy la redirige al Nodo más adecuado para resolverla (sea el Leader para escritura y alguno de los Followers para lectura).
+- Los Nodos crean un archivo .csv que es el encargado de conservar la data necesaria y allí se hacen todas las operaciones.
+- El Proxy hace uso del algoritmo Round-Robin para distribuir las peticiones de lectura entre los nodos Follower.
 
 ### 3.3. Detalles Técnicos
 **Lenguajes de Programación:**
@@ -226,6 +230,12 @@ Al estar ubicado en la carpeta del proyecto, en caso de estar usando una máquin
     $ sudo chmod 775 /usr/Algoritmo-Consenso-Proyecto1/Project/
 
 ### 3.5. Guía de Uso para Usuario
+1. Descargar el lenguaje de programación y las librerías en las máquinas a utilizar.
+2. Para las máquinas destinadas para los Nodos y para el Cliente, definir la dirección IP del Proxy en las secciones donde diga *"localhost"* (solo es necesario cambiar eso, porque a través de la comunicación los Nodos y el Cliente notifican al Proxy sobre sus direcciones IP).
+3. Ejecutar *"Proxy.py"* en una máquina.
+4. Ejecutar *"Node.py"* en una máquina, donde ese primer nodo se defina como "leader" (línea 172).
+5. Ejecutar *"Node.py"* en el número de máquinas que se desee, donde los nodos sean definidos como "follower" (línea 172). Para que el sistema pueda hacer consultas, por lo menos un follower debe estar en línea.
+6. Ejecutar *"Client.py"* en una máquina. Al ejecutar este archivo, se le darán instrucciones al usuario de como insertar datos y como consultarlos.
 
 ## 4. Información Relevante Adicional
 
