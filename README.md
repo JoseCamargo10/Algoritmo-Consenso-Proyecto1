@@ -179,6 +179,13 @@ La comunicación en el sistema distribuido se gestionará a través de gRPC, que
 ## 3. Descripción del Ambiente de Desarrollo y Técnico
 
 ### 3.1. ¿Cómo se compila y se ejecuta?
+EL proyecto solo necesita compilar el archivo *"Communication.proto"*, que es el encargado de definir los servicios de mensajería y los mensajes vía gRPC. Este archivo solo será necesario compilarlo si se le hacen cambios al mismo, ubicando a la terminal en la carpeta *"/Project"*:
+
+    $ python3 -m grpc_tools.protoc -I protos --python_out=. --grpc_python_out=. protos/Communication.proto
+
+Para ejecutar el código, hay que ubicarse en la carpeta *"/Project"* y aquí ejecutar los comandos ya conocidos de Python:
+
+    $ python3 Nombre_del_Archivo.py
 
 ### 3.2. Detalles del Desarrollo
 
@@ -212,23 +219,17 @@ Estas librerías se descargan haciendo uso de Pip 24.2:
     $ python3.12 -m pip install grpcio==1.66.2 grpcio-tools==1.66.2 protobuf==5.28.2 py-raft==0.0.1
     $ python3.12 -m pip show grpcio grpcio-tools protobuf py-raft
 
-
-
 ### 3.4. ¿Cómo se configuran los parámetros del proyecto?
+Al estar ubicado en la carpeta del proyecto, en caso de estar usando una máquina virtual Linux, se le deben entregar permisos a la carpeta para que así pueda escribir y leer los archivos necesarios:
 
-## 4. Descripcion del Ambiente de Ejecución (En Producción)
+    $ sudo chown ubuntu:ubuntu /usr/Algoritmo-Consenso-Proyecto1/Project/
+    $ sudo chmod 775 /usr/Algoritmo-Consenso-Proyecto1/Project/
 
-### 4.1. IP o Nombres de Dominio en la Nube o Máquina Servidor
+### 3.5. Guía de Uso para Usuario
 
-### 4.2. ¿Cómo se configuran los parámetros del proyecto?
+## 4. Información Relevante Adicional
 
-### 4.3. ¿Cómo se lanza el servidor?
-
-### 4.4. Guía de Uso para Usuario
-
-## 5. Información Relevante Adicional
-
-## 6. Referencias
+## 5. Referencias
 - https://medium.com/@dappsar/algor%C3%ADtmos-de-consenso-raft-y-paxos-b252e51e911a
 - https://oa.upm.es/71285/
 - https://www.natapuntes.es/algoritmo-paxos/ 
