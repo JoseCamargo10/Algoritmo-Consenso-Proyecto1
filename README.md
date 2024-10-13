@@ -204,6 +204,15 @@ Estas librerías se descargan haciendo uso de Pip 24.2:
     $ sudo ./configure --enable-optimizations
     $ sudo make altinstall
 
+**Instalación de Librerías:**
+
+    $ sudo apt install -y python3-pip
+    $ python3.12 -m ensurepip --upgrade
+    $ python3.12 -m pip install --upgrade pip==24.2
+    $ python3.12 -m pip install grpcio==1.66.2 grpcio-tools==1.66.2 protobuf==5.28.2 py-raft==0.0.1
+    $ python3.12 -m pip show grpcio grpcio-tools protobuf py-raft
+
+
 
 ### 3.4. ¿Cómo se configuran los parámetros del proyecto?
 
