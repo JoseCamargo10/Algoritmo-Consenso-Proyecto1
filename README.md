@@ -230,3 +230,6 @@ Estas librerías se descargan haciendo uso de Pip 24.2:
 - https://protobuf.dev/reference/python/python-generated/#invocation
 - https://www.geeksforgeeks.org/python-program-find-ip-address/
 - https://www.datacamp.com/es/tutorial/guide-to-python-hashmaps
+- https://sparkbyexamples.com/python/create-array-of-strings-in-python/
+- https://groups.google.com/g/protobuf/c/15cQIumEVtI?pli=1
+- https://webdebe.com/python/55/recorrer-un-array-vector-o-lista-con-python
