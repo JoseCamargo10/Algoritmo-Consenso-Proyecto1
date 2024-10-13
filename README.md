@@ -194,6 +194,16 @@ Estas librerías se descargan haciendo uso de Pip 24.2:
 - protobuf 5.28.2
 - py-raft 0.0.1
 
+**Instalación de Python:**
+    $ sudo apt install -y build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev libncursesw5-dev xz-utils tk-dev libffi-dev liblzma-dev python3-openssl git
+    $ cd /usr/src
+    $ sudo wget https://www.python.org/ftp/python/3.12.6/Python-3.12.6.tgz
+    $ sudo tar xzf Python-3.12.6.tgz
+    $ cd Python-3.12.6
+    $ sudo ./configure --enable-optimizations
+    $ sudo make altinstall
+
+
 ### 3.4. ¿Cómo se configuran los parámetros del proyecto?
 
 ## 4. Descripcion del Ambiente de Ejecución (En Producción)
