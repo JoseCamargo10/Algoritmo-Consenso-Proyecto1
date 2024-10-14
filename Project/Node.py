@@ -62,6 +62,21 @@ class communicationHandlerServicer(Communication_pb2_grpc.communicationHandlerSe
     def Heartbeat(self, request, context):
         print("Heartbeat received from leader")
         return Communication_pb2.GResponse(number=1)  # Acknowledge heartbeat
+    
+    # Method to handle new leader notification from the proxy
+    def NewLeaderNotification(self, request, context):
+        global leader_ip, nodes_info
+        new_leader_ip = request.new_leader_ip
+        print(f"Node received notification of new leader: {new_leader_ip}")
+        
+        # Update the local leader information
+        leader_ip = new_leader_ip
+        # Update all node roles locally
+        for key in nodes_info.keys():
+            nodes_info[key] = "follower"
+        nodes_info[leader_ip] = "leader"
+        
+        return Communication_pb2.GResponse(number=1)
 
 
 # Resend writing process from leader to followers
@@ -218,14 +233,13 @@ def chooseNewLeader():
     if candidate:
         print(f"New leader elected: {candidate}")
         leader_ip = candidate
-
         # Update node roles
         for key in nodes_info.keys():
             nodes_info[key] = "follower"
         nodes_info[leader_ip] = "leader"
         
         updateLeaderIp(leader_ip)
-
+        notifyNewLeaderToProxy(leader_ip)
 
 def updateLeaderIp():
     global leader_ip, nodes_info
@@ -233,7 +247,21 @@ def updateLeaderIp():
         if value == "leader":
             leader_ip = key
             break  # Salir del bucle una vez que se encuentra el líder
+        
 
+# Notify the proxy about the new leader
+# --------------------------------------------------------------------------------------------------------------
+def notifyNewLeaderToProxy(new_leader_ip):
+    # This method is responsible for notifying the proxy when a new leader is chosen.
+    print(f"Notifying proxy that {new_leader_ip} is the new leader")
+    
+    try:
+        with grpc.insecure_channel("54.158.59.187:50052") as channel:  # Connect to proxy (use actual proxy IP)
+            stub = Communication_pb2_grpc.communicationHandlerStub(channel)
+            response = stub.UpdateLeaderInfo(Communication_pb2.LeaderInfoRequest(new_leader_ip=new_leader_ip))
+            print("Proxy notified of new leader.")
+    except grpc.RpcError as e:
+        print(f"Failed to notify proxy about new leader: {e}")
 
 
 # Server configuration

@@ -10,6 +10,7 @@ service communicationHandler {
     rpc AppendEntries(WriteRequest) returns (GResponse);    // To write on Followers from Leader
     rpc UpdateWriteArray(ArrayRequest) returns (Array);     // A new node asks to Leader for the log of writing
     rpc Heartbeat(GRequest) returns (GResponse);            // Heartbeat to warn of Leader existence
+    rpc NewLeaderNotification (LeaderNotificationRequest) returns (GResponse);  // // Method to notify nodes about the new leader
 }
 
 // ------------------------------------------------------------------------
@@ -96,3 +97,7 @@ message Array {
     repeated string array = 1;
 }
 // ------------------------------------------------------------------------
+// New message to carry the new leader's IP address
+message LeaderNotificationRequest {
+    string new_leader_ip = 1;
+}
