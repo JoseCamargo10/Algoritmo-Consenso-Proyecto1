@@ -128,7 +128,7 @@ def updateProxy(role):
     hostname = socket.gethostname()
     IPAddr = socket.gethostbyname(hostname)
 
-    with grpc.insecure_channel("3.84.177.11:50052") as channel:
+    with grpc.insecure_channel("54.158.59.187:50052") as channel:
         stub = Communication_pb2_grpc.communicationHandlerStub(channel)
         response = stub.UpdateNodes(Communication_pb2.UpdateInfoRequest(ip=IPAddr, role=role))
         nodes_info = response.nodes_info
@@ -157,7 +157,7 @@ def updateProxy(role):
 def notifyDisconnection():
     hostname = socket.gethostname()
     IPAddr = socket.gethostbyname(hostname)
-    with grpc.insecure_channel("3.84.177.11:50052") as channel:
+    with grpc.insecure_channel("54.158.59.187:50052") as channel:
         stub = Communication_pb2_grpc.communicationHandlerStub(channel)
         response = stub.Disconnection(Communication_pb2.DisconnectionRequest(address=IPAddr))
 
