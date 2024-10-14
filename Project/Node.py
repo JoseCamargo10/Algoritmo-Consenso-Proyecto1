@@ -12,6 +12,10 @@ import Communication_pb2_grpc
 
 nodes_info = {}
 write_array = []
+commit_counts = {}  # Stores the commit counters for each node
+commit_counts[socket.gethostname()] = 0
+leader_ip = None  # Stores the IP address of the current leader
+last_heartbeat_time = time.time() 
 
 # gRPC communication class
 # --------------------------------------------------------------------------------------------------------------
@@ -105,7 +109,7 @@ def reader(name, attribute, desiredValue):
 # Write to CSV method
 # --------------------------------------------------------------------------------------------------------------
 def writer(name, attributes, statement):
-    global write_array
+    global write_array, commit_counts
     write_array.append(statement)
     headers = [["Brand", "Country", "Year"]]
     fileName = f"{name}.csv"
@@ -119,6 +123,11 @@ def writer(name, attributes, statement):
     with open (fileName, mode='a', newline='') as csvfile:
         writer = csv.writer(csvfile)
         writer.writerows(attributes_list)
+        
+    # Increment the commit counter
+    current_node = socket.gethostname()
+    commit_counts[current_node] = commit_counts.get(current_node, 0) + 1
+    print(f"Commit count for {current_node}: {commit_counts[current_node]}")
 
 
 # Method to say to proxy that this node is online with a role and maintain the heartbeat
@@ -134,7 +143,7 @@ def updateProxy(role):
         nodes_info = response.nodes_info
         print()
         print(f"Local nodes hashmap: {nodes_info}")
-
+            
     # Method to update new nodes' dbs
     for key, value in nodes_info.items():
         if value == "leader" and key != IPAddr:
@@ -163,18 +172,69 @@ def notifyDisconnection():
 
 
 def heartbeat():
-    global nodes_info
+    global nodes_info, last_heartbeat_time
     while True:
+        leader_detected = False # Reset leader detection flag at the beginning of each cycle
         for key, value in nodes_info.items():
-            if value == "leader":
+            if value == "leader":  # Check if there is a leader in the cluster
+                leader_detected = True  # Mark that a leader is currently detected
                 try:
                     with grpc.insecure_channel(f"{key}:50053") as channel:
                         stub = Communication_pb2_grpc.communicationHandlerStub(channel)
                         response = stub.Heartbeat(Communication_pb2.GRequest(number=1))
                         print(f"Heartbeat sent to {key}, response: {response.number}")
+                        last_heartbeat_time = time.time()  # Update the time of the last heartbeat received
                 except grpc.RpcError as e:
                     print(f"Failed to send heartbeat to leader at {key}: {e}")
-        time.sleep(5)  # Send heartbeat every 5 seconds
+                    
+        # If no heartbeat from the leader is detected within the last 10 seconds
+        if leader_detected and time.time() - last_heartbeat_time > 10:
+            print("Leader heartbeat timeout, starting new leader election...")
+            chooseNewLeader()  # Start the new leader election process
+            last_heartbeat_time = time.time()  # Reset the timer after electing a new leader
+
+        time.sleep(5)  # Check for heartbeats every 5 seconds
+     
+     
+# New Leader Election
+# --------------------------------------------------------------------------------------------------------------
+def chooseNewLeader(): 
+    # Method for electing a new leader based on the number of commits
+    global nodes_info, leader_ip, commit_counts
+
+    # Finding follower nodes and their commit counter
+    candidate = None
+    max_commits = -1
+
+    for key, value in nodes_info.items():
+        if value == "follower":
+            # Get the number of follower commits
+            follower_commit_count = commit_counts.get(key, 0)  # Using the Accounting Dictionary
+            if follower_commit_count > max_commits:
+                max_commits = follower_commit_count
+                candidate = key
+
+    # If there is a candidate, declare the new leader
+    if candidate:
+        print(f"New leader elected: {candidate}")
+        leader_ip = candidate
+
+        # Update node roles
+        for key in nodes_info.keys():
+            nodes_info[key] = "follower"
+        nodes_info[leader_ip] = "leader"
+        
+        updateLeaderIp(leader_ip)
+
+
+def updateLeaderIp():
+    global leader_ip, nodes_info
+    for key, value in nodes_info.items():
+        if value == "leader":
+            leader_ip = key
+            break  # Salir del bucle una vez que se encuentra el líder
+
+
 
 # Server configuration
 # --------------------------------------------------------------------------------------------------------------
