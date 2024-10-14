@@ -47,6 +47,13 @@ def disconnectionOrconnectionUpdate():
             print(f"Error updating node {key}: {e}")
 
 
+# Method to record heartbeat of the leader
+# --------------------------------------------------------------------------------------------------------------
+def Heartbeat(self, request, context):
+    print("Received heartbeat from leader")
+    return Communication_pb2.GResponse(number=1)  # Acknowledge heartbeat
+
+
 # Method to send writing to leader
 # --------------------------------------------------------------------------------------------------------------
 def sendWrite(message):

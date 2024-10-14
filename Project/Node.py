@@ -54,6 +54,10 @@ class communicationHandlerServicer(Communication_pb2_grpc.communicationHandlerSe
         print()
         print(f"New node says: {request.message}")
         return Communication_pb2.Array(array = write_array)
+    
+    def Heartbeat(self, request, context):
+        print("Heartbeat received from leader")
+        return Communication_pb2.GResponse(number=1)  # Acknowledge heartbeat
 
 
 # Resend writing process from leader to followers
@@ -117,7 +121,7 @@ def writer(name, attributes, statement):
         writer.writerows(attributes_list)
 
 
-# Method to say to proxy that this node is online with a role
+# Method to say to proxy that this node is online with a role and maintain the heartbeat
 # --------------------------------------------------------------------------------------------------------------
 def updateProxy(role):
     global nodes_info
@@ -158,6 +162,20 @@ def notifyDisconnection():
         response = stub.Disconnection(Communication_pb2.DisconnectionRequest(address=IPAddr))
 
 
+def heartbeat():
+    global nodes_info
+    while True:
+        for key, value in nodes_info.items():
+            if value == "leader":
+                try:
+                    with grpc.insecure_channel(f"{key}:50053") as channel:
+                        stub = Communication_pb2_grpc.communicationHandlerStub(channel)
+                        response = stub.Heartbeat(Communication_pb2.GRequest(number=1))
+                        print(f"Heartbeat sent to {key}, response: {response.number}")
+                except grpc.RpcError as e:
+                    print(f"Failed to send heartbeat to leader at {key}: {e}")
+        time.sleep(5)  # Send heartbeat every 5 seconds
+
 # Server configuration
 # --------------------------------------------------------------------------------------------------------------
 def serve():
@@ -167,6 +185,9 @@ def serve():
     if os.path.exists("Cars.csv"):
         os.remove("Cars.csv")
     node.start()
+    # Start heartbeat thread using ThreadPoolExecutor
+    executor = futures.ThreadPoolExecutor(max_workers=1)
+    executor.submit(heartbeat)  # This will run heartbeat in a separate thread
     print()
     print("Node started on port 50053")
     updateProxy("follower")
