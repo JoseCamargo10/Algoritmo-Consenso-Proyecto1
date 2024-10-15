@@ -47,7 +47,7 @@ def UpdateLeaderInfo(self, request, context):
     nodes_info[new_leader_ip] = "leader"
     
     # Propagate the new leader information to all followers
-    self.propagateLeaderUpdate(new_leader_ip)
+    propagateLeaderUpdate(new_leader_ip)
     return Communication_pb2.GResponse(number=1)
 
 

@@ -12,8 +12,7 @@ import Communication_pb2_grpc
 
 nodes_info = {}
 write_array = []
-commit_counts = {}  # Stores the commit counters for each node
-commit_counts[socket.gethostname()] = 0
+commit_counts = 0  # Stores the commit counters for each node
 leader_ip = None  # Stores the IP address of the current leader
 last_heartbeat_time = time.time()
 heartbeat_timeout = 5
@@ -82,6 +81,10 @@ class communicationHandlerServicer(Communication_pb2_grpc.communicationHandlerSe
         nodes_info[leader_ip] = "leader"
         
         return Communication_pb2.GResponse(number=1)
+    
+    def GetCommitCount(self, request, context):
+        global commit_counts
+        return Communication_pb2.GResponse(number=commit_counts)
 
 
 # Resend writing process from leader to followers
@@ -146,8 +149,8 @@ def writer(name, attributes, statement):
         
     # Increment the commit counter
     current_node = socket.gethostname()
-    commit_counts[current_node] = commit_counts.get(current_node, 0) + 1
-    print(f"Commit count for {current_node}: {commit_counts[current_node]}")
+    commit_counts +=1
+    print(f"Commit count for {current_node}: {commit_counts}")
 
 
 # Method to say to proxy that this node is online with a role and maintain the heartbeat
@@ -208,7 +211,7 @@ def heartbeat():
                     print(f"Failed to send heartbeat to leader at {key}: {e}")
                     
         # If no heartbeat from the leader is detected within the last 10 seconds
-        if leader_detected and time.time() - last_heartbeat_time > 10:
+        if time.time() - last_heartbeat_time > 10:
             print("Leader heartbeat timeout, starting new leader election...")
             notify_other_nodes()  # Notify other nodes about the leader's failure
             chooseNewLeader()  # Start the new leader election process
@@ -218,6 +221,7 @@ def heartbeat():
      
 
 def notify_other_nodes():
+    global nodes_info
     print("Notifying other nodes about leader failure...")
     for key in nodes_info.keys():
         try:
@@ -236,15 +240,19 @@ def chooseNewLeader(): # Method for electing a new leader based on the number of
 
     # Finding follower nodes and their commit counter
     candidate = None
-    max_commits = -1
+    max_commits = commit_counts.get(key, 0)
 
     for key, value in nodes_info.items():
         if value == "follower":
             # Get the number of follower commits
-            follower_commit_count = commit_counts.get(key, 0)  # Using the Accounting Dictionary
-            if follower_commit_count > max_commits:
-                max_commits = follower_commit_count
-                candidate = key
+            with grpc.insecure_channel(f"{key}:50053") as channel:
+                stub = Communication_pb2_grpc.communicationHandlerStub(channel)
+                response = stub.GetCommitCount(Communication_pb2.GRequest(number=1))
+                print(f"Ip: {key} - commit count: {response.number}")
+                follower_commit_count = response.number  # Using the Accounting Dictionary
+                if follower_commit_count > max_commits:
+                    max_commits = follower_commit_count
+                    candidate = key
 
     # If there is a candidate, declare the new leader
     if candidate:

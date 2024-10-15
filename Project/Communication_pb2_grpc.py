@@ -79,8 +79,8 @@ class communicationHandlerStub(object):
                 request_serializer=Communication__pb2.GRequest.SerializeToString,
                 response_deserializer=Communication__pb2.GResponse.FromString,
                 _registered_method=True)
-        self.NotifyNewLeader = channel.unary_unary(
-                '/communicationHandler/NotifyNewLeader',
+        self.NewLeaderNotification = channel.unary_unary(
+                '/communicationHandler/NewLeaderNotification',
                 request_serializer=Communication__pb2.LeaderNotificationRequest.SerializeToString,
                 response_deserializer=Communication__pb2.GResponse.FromString,
                 _registered_method=True)
@@ -92,6 +92,11 @@ class communicationHandlerStub(object):
         self.UpdateLeaderInfo = channel.unary_unary(
                 '/communicationHandler/UpdateLeaderInfo',
                 request_serializer=Communication__pb2.LeaderInfoRequest.SerializeToString,
+                response_deserializer=Communication__pb2.GResponse.FromString,
+                _registered_method=True)
+        self.GetCommitCount = channel.unary_unary(
+                '/communicationHandler/GetCommitCount',
+                request_serializer=Communication__pb2.GRequest.SerializeToString,
                 response_deserializer=Communication__pb2.GResponse.FromString,
                 _registered_method=True)
 
@@ -162,7 +167,7 @@ class communicationHandlerServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def NotifyNewLeader(self, request, context):
+    def NewLeaderNotification(self, request, context):
         """Notify proxy about the new leader
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
@@ -177,6 +182,12 @@ class communicationHandlerServicer(object):
         raise NotImplementedError('Method not implemented!')
 
     def UpdateLeaderInfo(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def GetCommitCount(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -230,8 +241,8 @@ def add_communicationHandlerServicer_to_server(servicer, server):
                     request_deserializer=Communication__pb2.GRequest.FromString,
                     response_serializer=Communication__pb2.GResponse.SerializeToString,
             ),
-            'NotifyNewLeader': grpc.unary_unary_rpc_method_handler(
-                    servicer.NotifyNewLeader,
+            'NewLeaderNotification': grpc.unary_unary_rpc_method_handler(
+                    servicer.NewLeaderNotification,
                     request_deserializer=Communication__pb2.LeaderNotificationRequest.FromString,
                     response_serializer=Communication__pb2.GResponse.SerializeToString,
             ),
@@ -243,6 +254,11 @@ def add_communicationHandlerServicer_to_server(servicer, server):
             'UpdateLeaderInfo': grpc.unary_unary_rpc_method_handler(
                     servicer.UpdateLeaderInfo,
                     request_deserializer=Communication__pb2.LeaderInfoRequest.FromString,
+                    response_serializer=Communication__pb2.GResponse.SerializeToString,
+            ),
+            'GetCommitCount': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetCommitCount,
+                    request_deserializer=Communication__pb2.GRequest.FromString,
                     response_serializer=Communication__pb2.GResponse.SerializeToString,
             ),
     }
@@ -500,7 +516,7 @@ class communicationHandler(object):
             _registered_method=True)
 
     @staticmethod
-    def NotifyNewLeader(request,
+    def NewLeaderNotification(request,
             target,
             options=(),
             channel_credentials=None,
@@ -513,7 +529,7 @@ class communicationHandler(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/communicationHandler/NotifyNewLeader',
+            '/communicationHandler/NewLeaderNotification',
             Communication__pb2.LeaderNotificationRequest.SerializeToString,
             Communication__pb2.GResponse.FromString,
             options,
@@ -569,6 +585,33 @@ class communicationHandler(object):
             target,
             '/communicationHandler/UpdateLeaderInfo',
             Communication__pb2.LeaderInfoRequest.SerializeToString,
+            Communication__pb2.GResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def GetCommitCount(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/communicationHandler/GetCommitCount',
+            Communication__pb2.GRequest.SerializeToString,
             Communication__pb2.GResponse.FromString,
             options,
             channel_credentials,

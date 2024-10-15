@@ -10,10 +10,11 @@ service communicationHandler {
     rpc AppendEntries(WriteRequest) returns (GResponse);    // To write on Followers from Leader
     rpc UpdateWriteArray(ArrayRequest) returns (Array);     // A new node asks to Leader for the log of writing
     rpc Heartbeat(GRequest) returns (GResponse);            // Heartbeat to warn of Leader existence
-    rpc NotifyNewLeader(LeaderNotificationRequest) returns (GResponse);  // Notify proxy about the new leader
+    rpc NewLeaderNotification(LeaderNotificationRequest) returns (GResponse);  // Notify proxy about the new leader
     rpc GetLeaderStatus(GRequest) returns (LeaderStatusResponse);  // Check the status of the current leader
     rpc UpdateLeaderInfo(LeaderInfoRequest) returns (GResponse);
-}
+    rpc GetCommitCount(GRequest) returns (GResponse);
+} 
 
 // ------------------------------------------------------------------------
 // Generic request
