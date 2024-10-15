@@ -160,7 +160,7 @@ def updateProxy(role):
     hostname = socket.gethostname()
     IPAddr = socket.gethostbyname(hostname)
 
-    with grpc.insecure_channel("3.89.158.169:50052") as channel:
+    with grpc.insecure_channel("34.229.248.203:50052") as channel:
         stub = Communication_pb2_grpc.communicationHandlerStub(channel)
         response = stub.UpdateNodes(Communication_pb2.UpdateInfoRequest(ip=IPAddr, role=role))
         nodes_info = response.nodes_info
@@ -189,7 +189,7 @@ def updateProxy(role):
 def notifyDisconnection():
     hostname = socket.gethostname()
     IPAddr = socket.gethostbyname(hostname)
-    with grpc.insecure_channel("3.89.158.169:50052") as channel:
+    with grpc.insecure_channel("34.229.248.203:50052") as channel:
         stub = Communication_pb2_grpc.communicationHandlerStub(channel)
         response = stub.Disconnection(Communication_pb2.DisconnectionRequest(address=IPAddr))
 
@@ -282,7 +282,7 @@ def notifyNewLeaderToProxy(new_leader_ip): # This method is responsible for noti
     print(f"Notifying proxy that {new_leader_ip} is the new leader")
     
     try:
-        with grpc.insecure_channel("3.89.158.169:50052") as channel:  # Connect to proxy (use actual proxy IP)
+        with grpc.insecure_channel("34.229.248.203:50052") as channel:  # Connect to proxy (use actual proxy IP)
             stub = Communication_pb2_grpc.communicationHandlerStub(channel)
             response = stub.UpdateLeaderInfo(Communication_pb2.LeaderInfoRequest(new_leader_ip=new_leader_ip))
             print("Proxy notified of new leader.")
