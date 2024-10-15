@@ -79,9 +79,19 @@ class communicationHandlerStub(object):
                 request_serializer=Communication__pb2.GRequest.SerializeToString,
                 response_deserializer=Communication__pb2.GResponse.FromString,
                 _registered_method=True)
-        self.NewLeaderNotification = channel.unary_unary(
-                '/communicationHandler/NewLeaderNotification',
+        self.NotifyNewLeader = channel.unary_unary(
+                '/communicationHandler/NotifyNewLeader',
                 request_serializer=Communication__pb2.LeaderNotificationRequest.SerializeToString,
+                response_deserializer=Communication__pb2.GResponse.FromString,
+                _registered_method=True)
+        self.GetLeaderStatus = channel.unary_unary(
+                '/communicationHandler/GetLeaderStatus',
+                request_serializer=Communication__pb2.GRequest.SerializeToString,
+                response_deserializer=Communication__pb2.LeaderStatusResponse.FromString,
+                _registered_method=True)
+        self.UpdateLeaderInfo = channel.unary_unary(
+                '/communicationHandler/UpdateLeaderInfo',
+                request_serializer=Communication__pb2.LeaderInfoRequest.SerializeToString,
                 response_deserializer=Communication__pb2.GResponse.FromString,
                 _registered_method=True)
 
@@ -152,9 +162,22 @@ class communicationHandlerServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def NewLeaderNotification(self, request, context):
-        """// Method to notify nodes about the new leader
+    def NotifyNewLeader(self, request, context):
+        """Notify proxy about the new leader
         """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def GetLeaderStatus(self, request, context):
+        """Check the status of the current leader
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def UpdateLeaderInfo(self, request, context):
+        """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
@@ -207,9 +230,19 @@ def add_communicationHandlerServicer_to_server(servicer, server):
                     request_deserializer=Communication__pb2.GRequest.FromString,
                     response_serializer=Communication__pb2.GResponse.SerializeToString,
             ),
-            'NewLeaderNotification': grpc.unary_unary_rpc_method_handler(
-                    servicer.NewLeaderNotification,
+            'NotifyNewLeader': grpc.unary_unary_rpc_method_handler(
+                    servicer.NotifyNewLeader,
                     request_deserializer=Communication__pb2.LeaderNotificationRequest.FromString,
+                    response_serializer=Communication__pb2.GResponse.SerializeToString,
+            ),
+            'GetLeaderStatus': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetLeaderStatus,
+                    request_deserializer=Communication__pb2.GRequest.FromString,
+                    response_serializer=Communication__pb2.LeaderStatusResponse.SerializeToString,
+            ),
+            'UpdateLeaderInfo': grpc.unary_unary_rpc_method_handler(
+                    servicer.UpdateLeaderInfo,
+                    request_deserializer=Communication__pb2.LeaderInfoRequest.FromString,
                     response_serializer=Communication__pb2.GResponse.SerializeToString,
             ),
     }
@@ -467,7 +500,7 @@ class communicationHandler(object):
             _registered_method=True)
 
     @staticmethod
-    def NewLeaderNotification(request,
+    def NotifyNewLeader(request,
             target,
             options=(),
             channel_credentials=None,
@@ -480,8 +513,62 @@ class communicationHandler(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/communicationHandler/NewLeaderNotification',
+            '/communicationHandler/NotifyNewLeader',
             Communication__pb2.LeaderNotificationRequest.SerializeToString,
+            Communication__pb2.GResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def GetLeaderStatus(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/communicationHandler/GetLeaderStatus',
+            Communication__pb2.GRequest.SerializeToString,
+            Communication__pb2.LeaderStatusResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def UpdateLeaderInfo(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/communicationHandler/UpdateLeaderInfo',
+            Communication__pb2.LeaderInfoRequest.SerializeToString,
             Communication__pb2.GResponse.FromString,
             options,
             channel_credentials,
