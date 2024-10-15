@@ -240,7 +240,7 @@ def chooseNewLeader(): # Method for electing a new leader based on the number of
 
     # Finding follower nodes and their commit counter
     candidate = None
-    max_commits = commit_counts.get(key, 0)
+    max_commits = commit_counts
 
     for key, value in nodes_info.items():
         if value == "follower":
