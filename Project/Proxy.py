@@ -34,21 +34,19 @@ class communicationHandlerServicer(Communication_pb2_grpc.communicationHandlerSe
             disconnectionOrconnectionUpdate()
         return Communication_pb2.DisconnectionResponse(message="1")
 
-
-# gRPC method to update leader information in the proxy
-# --------------------------------------------------------------------------------------------------------------
-def UpdateLeaderInfo(self, request, context):
-    new_leader_ip = request.new_leader_ip
-    print(f"Received request to update leader to {new_leader_ip}")
-    
-    # Update the nodes_info hashmap with the new leader
-    for key in nodes_info.keys():
-        nodes_info[key] = "follower"
-    nodes_info[new_leader_ip] = "leader"
-    
-    # Propagate the new leader information to all followers
-    propagateLeaderUpdate(new_leader_ip)
-    return Communication_pb2.GResponse(number=1)
+    # gRPC method to update leader information in the proxy
+    def UpdateLeaderInfo(self, request, context):
+        new_leader_ip = request.new_leader_ip
+        print(f"Received request to update leader to {new_leader_ip}")
+        
+        # Update the nodes_info hashmap with the new leader
+        for key in nodes_info.keys():
+            nodes_info[key] = "follower"
+        nodes_info[new_leader_ip] = "leader"
+        
+        # Propagate the new leader information to all followers
+        propagateLeaderUpdate(new_leader_ip)
+        return Communication_pb2.GResponse(number=1)
 
 
 # Method to propagate the leader update to all nodes
