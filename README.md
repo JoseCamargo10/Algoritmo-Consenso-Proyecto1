@@ -260,7 +260,7 @@ Al estar ubicado en la carpeta del proyecto, en caso de estar usando una máquin
 6. Ejecutar *"Client.py"* en una máquina. Al ejecutar este archivo, se le darán instrucciones al usuario de como insertar datos y como consultarlos.
 
 ## 4. Información Relevante Adicional
-Enlace del video explicativo y la demostración de pruebas: 
+Enlace del video explicativo y la demostración de pruebas: https://youtu.be/RQrZ-UKKK2I
 
 ## 5. Referencias
 - https://medium.com/@dappsar/algor%C3%ADtmos-de-consenso-raft-y-paxos-b252e51e911a
