@@ -213,6 +213,7 @@ Para ejecutar el código, hay que ubicarse en la carpeta *"/Project"* y aquí ej
 - El programa sigue la secuencia en la que el Cliente hace una petición que recepciona el Proxy, y el Proxy la redirige al Nodo más adecuado para resolverla (sea el Leader para escritura y alguno de los Followers para lectura).
 - Los Nodos crean un archivo .csv que es el encargado de conservar la data necesaria y allí se hacen todas las operaciones.
 - El Proxy hace uso del algoritmo Round-Robin para distribuir las peticiones de lectura entre los nodos Follower.
+- La explicación del Algoritmo de Consenso está adjuntada en el vídeo de la sección 4.
 
 ### 3.3. Detalles Técnicos
 **Lenguajes de Programación:**
@@ -259,6 +260,7 @@ Al estar ubicado en la carpeta del proyecto, en caso de estar usando una máquin
 6. Ejecutar *"Client.py"* en una máquina. Al ejecutar este archivo, se le darán instrucciones al usuario de como insertar datos y como consultarlos.
 
 ## 4. Información Relevante Adicional
+Enlace del video explicativo y la demostración de pruebas: 
 
 ## 5. Referencias
 - https://medium.com/@dappsar/algor%C3%ADtmos-de-consenso-raft-y-paxos-b252e51e911a
