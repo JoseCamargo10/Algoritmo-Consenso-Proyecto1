@@ -246,7 +246,9 @@ def chooseNewLeader(): # Method for electing a new leader based on the number of
     global nodes_info, leader_ip, commit_counts, action
 
     # Finding follower nodes and their commit counter
-    candidate = None
+    hostname = socket.gethostname()
+    IPAddr = socket.gethostbyname(hostname)
+    candidate = IPAddr
     max_commits = commit_counts
 
     for key, value in nodes_info.items():
