@@ -64,7 +64,7 @@ class communicationHandlerServicer(Communication_pb2_grpc.communicationHandlerSe
     # Método para manejar heartbeats
     def Heartbeat(self, request, context):
         global last_heartbeat_time
-        print("Received heartbeat from leader")
+        print("Received heartbeat from leader (Myself)")
         last_heartbeat_time = time.time()  # Actualizar el tiempo del último heartbeat
         return Communication_pb2.GResponse(number=1)
     
@@ -211,7 +211,7 @@ def heartbeat():
                     with grpc.insecure_channel(f"{key}:50053") as channel:
                         stub = Communication_pb2_grpc.communicationHandlerStub(channel)
                         response = stub.Heartbeat(Communication_pb2.GRequest(number=1))
-                        print(f"Heartbeat sent to {key}, response: {response.number}")
+                        print(f"Heartbeat sent from leader: {key}, response: {response.number}")
                         last_heartbeat_time = time.time()  # Update the time of the last heartbeat received
                 except grpc.RpcError as e:
                     print(f"Failed to send heartbeat to leader at {key}: {e}")
