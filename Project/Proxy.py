@@ -40,7 +40,7 @@ class communicationHandlerServicer(Communication_pb2_grpc.communicationHandlerSe
         print(f"Received request to update leader to {new_leader_ip}")
         
         # Update the nodes_info hashmap with the new leader
-        for key in nodes_info.keys():
+        for key,value in nodes_info.items():
             nodes_info[key] = "follower"
         nodes_info[new_leader_ip] = "leader"
         
