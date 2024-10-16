@@ -85,14 +85,35 @@ La elección de un líder es una parte fundamental en los algoritmos de consenso
 ### 1.3. Requerimientos Funcionales y No Funcionales ALCANZADOS
 
 #### 1.3.1. Requerimientos Funcionales
+- El Cliente debe permitir a la aplicación cliente realizar consultas (lecturas) y modificaciones (escrituras) en la base de datos.
+- Las operaciones de escritura deben ser manejadas por el Líder, mientras que las de lectura deben ser manejadas por los Seguidores.
+- El Proxy debe interceptar las solicitudes del cliente y redirigirlas al proceso adecuado para su manejo (escrituras al Líder, lecturas a los Seguidores).
+- El Líder debe coordinar las operaciones de escritura para garantizar la consistencia de los datos.
+- Los Seguidores deben replicar las actualizaciones que les envía el líder. 
+- Se debe permitir la simulación de fallos del Líder y de uno o más Seguidores.
+- El sistema debe seguir funcionando con una mayoría de procesos operativos.
+- Los procesos que fallaron deben poder reincorporarse al sistema como Seguidores, sin comprometer la consistencia de los datos.
+- El sistema debe manejar de forma independiente las operaciones de manejo de datos (consultas y replicación) y la coordinación de la elección del Líder.
+- El sistema debe detectar automáticamente la caída del Líder.
+- En caso de falla del Líder, uno de los Seguidores debe asumir el rol de Líder para asegurar la continuidad del servicio.
 
 #### 1.3.2. Requerimientos No Funcionales
+- El sistema debe ser altamente disponible, garantizando que los Clientes puedan realizar operaciones incluso si alguno de los procesos (Líder o Seguidores) falla.
+- El sistema debe mantener la consistencia de los datos en todos los Seguidores durante las operaciones de escritura y replicación, así como durante la transición de un nuevo Líder.
+- El sistema debe gestionar de forma eficiente las operaciones de lectura y escritura, minimizando el tiempo de respuesta para las consultas del Cliente.
+- El sistema debe poder escalar con la adición de más Seguidores para manejar un mayor número de consultas de lectura sin comprometer la consistencia y disponibilidad.
+- El sistema debe ser capaz de recuperar su funcionamiento normal tras la caída de procesos y la elección de un nuevo Líder, sin pérdida de datos ni de solicitudes en curso.
+- El plano de control y el plano de datos deben estar desacoplados, asegurando que la coordinación del liderazgo no interfiera con las operaciones de consulta y modificación de datos.
+- El sistema debe permitir la simulación de fallos de forma controlada para verificar el comportamiento de la elección de Líder y la consistencia de datos en condiciones de fallo.
+- El proceso de elección de un nuevo Líder debe ser rápido y coordinado, para minimizar el tiempo en que el sistema opera sin un Líder activo.
 
 ### 1.4. Requerimientos Funcionales y No Funcionales NO ALCANZADOS
 
 #### 1.4.1. Requerimientos Funcionales
+- Durante la simulación de fallos, el sistema debe garantizar que no se pierdan solicitudes de la aplicación Cliente y que la consistencia de los datos se mantenga.
 
 #### 1.4.2. Requerimientos No Funcionales
+- Todos los requisitos fueron alcanzados.
 
 ## 2. Información General de Diseño de Alto Nivel | Arquitectura | Patrones 
 
