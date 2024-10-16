@@ -51,7 +51,7 @@ class communicationHandlerServicer(Communication_pb2_grpc.communicationHandlerSe
 
 # Method to propagate the leader update to all nodes
 # --------------------------------------------------------------------------------------------------------------
-def propagateLeaderUpdate(self, new_leader_ip):
+def propagateLeaderUpdate(new_leader_ip):
     for key, value in nodes_info.items():
         if key != new_leader_ip:  # Send to followers only
             try:
