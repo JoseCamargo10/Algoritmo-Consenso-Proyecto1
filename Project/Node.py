@@ -261,24 +261,23 @@ def chooseNewLeader(): # Method for electing a new leader based on the number of
                     max_commits = follower_commit_count
                     candidate = key
 
-    # If there is a candidate, declare the new leader
-    if candidate:
-        print(f"New leader elected: {candidate}")
-        leader_ip = candidate
+    
+    print(f"New leader elected: {candidate}")
+    leader_ip = candidate
+       
+    # Update node roles
+    for key in nodes_info.keys():
+        nodes_info[key] = "follower"
+    nodes_info[leader_ip] = "leader"
         
-        # Update node roles
-        for key in nodes_info.keys():
-            nodes_info[key] = "follower"
-        nodes_info[leader_ip] = "leader"
+    notifyNewLeaderToProxy(leader_ip)
+    updateLeaderIp()
         
-        notifyNewLeaderToProxy(leader_ip)
-        updateLeaderIp()
-        
-        for key,value in nodes_info.keys():
-            with grpc.insecure_channel(f"{key}:50053") as channel:
-                stub = Communication_pb2_grpc.communicationHandlerStub(channel)
-                response = stub.StopAction(Communication_pb2.GRequest(number=1)) 
-                action = response.number
+    for key,value in nodes_info.keys():
+        with grpc.insecure_channel(f"{key}:50053") as channel:
+            stub = Communication_pb2_grpc.communicationHandlerStub(channel)
+            response = stub.StopAction(Communication_pb2.GRequest(number=1)) 
+            action = response.number
         
 
 def updateLeaderIp():
