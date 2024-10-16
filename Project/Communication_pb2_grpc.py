@@ -99,6 +99,11 @@ class communicationHandlerStub(object):
                 request_serializer=Communication__pb2.GRequest.SerializeToString,
                 response_deserializer=Communication__pb2.GResponse.FromString,
                 _registered_method=True)
+        self.StopAction = channel.unary_unary(
+                '/communicationHandler/StopAction',
+                request_serializer=Communication__pb2.GRequest.SerializeToString,
+                response_deserializer=Communication__pb2.GResponse.FromString,
+                _registered_method=True)
 
 
 class communicationHandlerServicer(object):
@@ -193,6 +198,12 @@ class communicationHandlerServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def StopAction(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_communicationHandlerServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -258,6 +269,11 @@ def add_communicationHandlerServicer_to_server(servicer, server):
             ),
             'GetCommitCount': grpc.unary_unary_rpc_method_handler(
                     servicer.GetCommitCount,
+                    request_deserializer=Communication__pb2.GRequest.FromString,
+                    response_serializer=Communication__pb2.GResponse.SerializeToString,
+            ),
+            'StopAction': grpc.unary_unary_rpc_method_handler(
+                    servicer.StopAction,
                     request_deserializer=Communication__pb2.GRequest.FromString,
                     response_serializer=Communication__pb2.GResponse.SerializeToString,
             ),
@@ -611,6 +627,33 @@ class communicationHandler(object):
             request,
             target,
             '/communicationHandler/GetCommitCount',
+            Communication__pb2.GRequest.SerializeToString,
+            Communication__pb2.GResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def StopAction(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/communicationHandler/StopAction',
             Communication__pb2.GRequest.SerializeToString,
             Communication__pb2.GResponse.FromString,
             options,

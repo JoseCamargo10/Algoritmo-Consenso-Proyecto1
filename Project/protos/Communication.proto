@@ -14,6 +14,7 @@ service communicationHandler {
     rpc GetLeaderStatus(GRequest) returns (LeaderStatusResponse);  // Check the status of the current leader
     rpc UpdateLeaderInfo(LeaderInfoRequest) returns (GResponse);
     rpc GetCommitCount(GRequest) returns (GResponse);
+    rpc StopAction(GRequest) returns (GResponse);
 } 
 
 // ------------------------------------------------------------------------

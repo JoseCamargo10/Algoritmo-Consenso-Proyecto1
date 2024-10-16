@@ -17,6 +17,7 @@ leader_ip = None  # Stores the IP address of the current leader
 last_heartbeat_time = time.time()
 heartbeat_timeout = 5
 is_leader = False
+action = 0
 
 # gRPC communication class
 # --------------------------------------------------------------------------------------------------------------
@@ -85,6 +86,11 @@ class communicationHandlerServicer(Communication_pb2_grpc.communicationHandlerSe
     def GetCommitCount(self, request, context):
         global commit_counts
         return Communication_pb2.GResponse(number=commit_counts)
+    
+    def StopAction(self, request, context):
+        global action
+        action = 1
+        return Communication_pb2.GResponse(number=0)
 
 
 # Resend writing process from leader to followers
@@ -195,7 +201,7 @@ def notifyDisconnection():
 
 
 def heartbeat():
-    global nodes_info, last_heartbeat_time
+    global nodes_info, last_heartbeat_time, action
     while True:
         leader_detected = False # Reset leader detection flag at the beginning of each cycle
         for key, value in nodes_info.items():
@@ -211,7 +217,7 @@ def heartbeat():
                     print(f"Failed to send heartbeat to leader at {key}: {e}")
                     
         # If no heartbeat from the leader is detected within the last 10 seconds
-        if time.time() - last_heartbeat_time > 10:
+        if time.time() - last_heartbeat_time > 10 and action == 0:
             print("Leader heartbeat timeout, starting new leader election...")
             notify_other_nodes()  # Notify other nodes about the leader's failure
             chooseNewLeader()  # Start the new leader election process
@@ -221,13 +227,14 @@ def heartbeat():
      
 
 def notify_other_nodes():
-    global nodes_info
+    global nodes_info, action
     print("Notifying other nodes about leader failure...")
     for key in nodes_info.keys():
         try:
             with grpc.insecure_channel(f"{key}:50053") as channel:
                 stub = Communication_pb2_grpc.communicationHandlerStub(channel)
                 response = stub.DisconnectionUpdate(Communication_pb2.UpdateInfoResponse(nodes_info=nodes_info))
+                stop = stub.StopAction(Communication_pb2.GResponse(number=1))
                 print(f"Notified {key} about leader failure.")
         except grpc.RpcError as e:
             print(f"Failed to notify {key} about leader failure: {e}")
@@ -236,7 +243,7 @@ def notify_other_nodes():
 # New Leader Election
 # --------------------------------------------------------------------------------------------------------------
 def chooseNewLeader(): # Method for electing a new leader based on the number of commits
-    global nodes_info, leader_ip, commit_counts
+    global nodes_info, leader_ip, commit_counts, action
 
     # Finding follower nodes and their commit counter
     candidate = None
@@ -266,7 +273,13 @@ def chooseNewLeader(): # Method for electing a new leader based on the number of
         
         notifyNewLeaderToProxy(leader_ip)
         updateLeaderIp()
-        notify_other_nodes()
+        
+        for key,value in nodes_info.keys():
+            with grpc.insecure_channel(f"{key}:50053") as channel:
+                stub = Communication_pb2_grpc.communicationHandlerStub(channel)
+                response = stub.StopAction(Communication_pb2.GRequest(number=1)) 
+                action = response.number
+        
 
 def updateLeaderIp():
     global leader_ip, nodes_info
