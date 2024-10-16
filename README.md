@@ -225,7 +225,6 @@ Estas librerías se descargan haciendo uso de Pip 24.2:
 - grpcio 1.66.2
 - grpcio-tools 1.66.2
 - protobuf 5.28.2
-- py-raft 0.0.1
 
 **Instalación de Python:**
 
@@ -242,8 +241,8 @@ Estas librerías se descargan haciendo uso de Pip 24.2:
     $ sudo apt install -y python3-pip
     $ python3.12 -m ensurepip --upgrade
     $ python3.12 -m pip install --upgrade pip==24.2
-    $ python3.12 -m pip install grpcio==1.66.2 grpcio-tools==1.66.2 protobuf==5.28.2 py-raft==0.0.1
-    $ python3.12 -m pip show grpcio grpcio-tools protobuf py-raft
+    $ python3.12 -m pip install grpcio==1.66.2 grpcio-tools==1.66.2 protobuf==5.28.2
+    $ python3.12 -m pip show grpcio grpcio-tools protobuf
 
 ### 3.4. ¿Cómo se configuran los parámetros del proyecto?
 Al estar ubicado en la carpeta del proyecto, en caso de estar usando una máquina virtual Linux, se le deben entregar permisos a la carpeta para que así pueda escribir y leer los archivos necesarios:
